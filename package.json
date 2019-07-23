@@ -1,0 +1,26 @@
+{
+	"name": "node-red-contrib-json-multi-schema",
+	"version": "0.0.3",
+	"description": "JSON Schema validator for Node-RED accepting multiple schemas",
+	"main": "index.js",
+	"keywords": [
+		"schema",
+		"json",
+		"node-red",
+		"node"
+	],
+	"node-red": {
+		"nodes": {
+			"json-multi-schema": "json-multi-schema.js"
+		}
+	},
+	"author": {
+		"name": "Alexandre Alapetite",
+		"url": "https://alexandra.dk/alexandre.alapetite"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"ajv": "^6.10.0",
+		"node-fetch": "^2.6.0"
+	}
+}

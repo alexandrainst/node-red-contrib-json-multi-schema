@@ -1,0 +1,26 @@
+<script>
+	RED.nodes.registerType('json-multi-schema', {
+		category: 'function',
+		color: '#00B4FF',
+		defaults: {
+			name: { value: '', },
+		},
+		inputs: 1,
+		outputs: 1,
+		icon: 'function.png',
+		label: function () {
+			return this.name || 'json-multi-schema';
+		},
+	});
+</script>
+
+<script type="text/x-red" data-template-name="json-multi-schema">
+	<div class="form-row">
+		<label for="node-input-name"><i class="icon-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="json-multi-schema">
+	<p>The node will validate `msg.payload` against `msg.schemaUrl` JSON Schema URL. Errors are returned on msg.error</p>
+</script>
