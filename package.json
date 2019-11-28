@@ -1,8 +1,9 @@
 {
 	"name": "node-red-contrib-json-multi-schema",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "JSON Schema validator for Node-RED accepting multiple schemas",
 	"main": "index.js",
+	"readmeFilename": "readme.md",
 	"keywords": [
 		"schema",
 		"json",
@@ -20,7 +21,22 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"ajv": "^6.10.0",
+		"ajv": "^6.10.2",
 		"node-fetch": "^2.6.0"
+	},
+	"devDependencies": {
+		"jshint": "^2.10.3"
+	},
+	"jshintConfig": {
+		"esversion": 8,
+		"node": true,
+		"multistr": true,
+		"sub": true
+	},
+	"scripts": {
+		"start": "node ./index.js",
+		"lint": "node ./node_modules/.bin/jshint *.js",
+		"pretest": "npm run-script lint",
+		"test": "echo '{\"schemaUrl\":\"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json\",\"payload\":{\"id\":\"vehicle:WasteManagement:1\",\"type\":\"Vehicle\",\"vehicleType\":\"lorry\",\"category\":[\"municipalServices\"],\"location\":{\"type\":\"Point\",\"coordinates\":[-3.164485591715449,40.62785133667262]},\"name\":\"C Recogida 1\",\"speed\":50,\"cargoWeight\":314,\"serviceStatus\":\"onRoute\",\"serviceProvided\":[\"garbageCollection\",\"wasteContainerCleaning\"],\"areaServed\":\"Centro\",\"refVehicleModel\":\"vehiclemodel:econic\",\"vehiclePlateIdentifier\":\"3456ABC\"}}' | node ./index.js"
 	}
 }

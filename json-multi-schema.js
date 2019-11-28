@@ -1,5 +1,6 @@
-/* globals RED */
 /* jshint esversion:8, node:true, strict:true */
+
+const util = require('util');
 
 module.exports = RED => {
 	"use strict";
@@ -8,47 +9,12 @@ module.exports = RED => {
 		RED.nodes.createNode(this, config);
 		const node = this;
 
-		const cachePath = process.env.CACHE_PATH || '/tmp/';	//TODO: use better location for cache
-		node.debug('Cache path: ' + cachePath);
-
-		const crypto = require('crypto');
-		const fetch = require('node-fetch');
-		const fs = require('fs');
-		const util = require('util');
-		const readFileAsync = util.promisify(fs.readFile);
-		const writeFileAsync = util.promisify(fs.writeFile);
-
-		async function loadSchemaAsync(url) {
-			let schema, hash;
-			if (cachePath) {
-				hash = cachePath + crypto.createHash('sha256').update(url).digest('hex') + '.json';
-				try {
-					const data = await readFileAsync(hash, 'utf8');
-					node.debug('Load schema from cache: ' + url);
-					schema = JSON.parse(data);
-				} catch (ex) {
-					schema = false;
-				}
-			}
-			if (!schema) {
-				node.log('Load schema from Web: ' + url);
-				const res = await fetch(url);
-				schema = await res.json();
-				if (cachePath) {
-					try {
-						await writeFileAsync(hash, JSON.stringify(schema), 'utf8');
-					} catch (ex) {
-						node.warn('Error saving cache of "%s" in "%s"', url, cachePath);
-					}
-				}
-			}
-			return schema;
-		}
+		const jsonCache = require('./json-cache.js')(node);
 
 		const Ajv = require('ajv');
 		const ajv = Ajv({
 			allErrors: true,	//TODO: Make a parameter
-			loadSchema: loadSchemaAsync,
+			loadSchema: jsonCache.loadAsync,
 			messages: true,	//TODO: Make a parameter
 		});
 
