@@ -1,4 +1,4 @@
-# node-red-contrib-json-schema
+# node-red-contrib-json-multi-schema
 Set of generic JSON data pipeline tools, suitable from continuous/streaming input, and with dynamic configuration.
 
 All the modules are made for [Node-RED](https://nodered.org) but can alternatively be run from command-line using standard input/output.
@@ -18,7 +18,7 @@ Made in November 2019 by [Alexandre Alapetite](https://alexandra.dk/alexandre.al
 
  
 
-## node-red-contrib-json-multi-transformer
+## node-red-contrib-json-multi-schema-transformer
 * *Context*: Node-RED node, or command line with [`index-transformer.js`](./index-transformer.js)
 * *Purpose*: Ability to transform a JSON observation on the fly from whichever format to another format  (e.g. one of the FIWARE NGSI types) using a specified JSONata Schema URL. Schemas are automatically downloaded and cached the first time they are needed.
 * *Configuration*: A Node-RED `transformUrl` property to indicate the URL of a file listing which JSONata file to use for which data input. (See example below).
