@@ -13,7 +13,7 @@ Made in November 2019 by [Alexandre Alapetite](https://alexandra.dk/alexandre.al
 *TODO*: Node-RED screenshot
 
 
-<br /><br />
+<br/><br/>
 ---
 
 
@@ -122,7 +122,7 @@ Output:
 ```
 
 
-<br /><br />
+<br/><br/>
 ---
 
 
@@ -195,7 +195,7 @@ Output:
 ```
 
 
-<br /><br />
+<br/><br/>
 ---
 
 
@@ -249,7 +249,7 @@ Output:
 ```
 
 
-<br /><br />
+<br/><br/>
 ---
 
 
@@ -269,7 +269,7 @@ node ./index-transformer.js 'https://synchronicity.example.net/smart-data-transf
 _Note_: This is the example used for `npm test`
 
 
-<br /><br />
+<br/><br/>
 ---
 
 
