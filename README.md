@@ -13,10 +13,10 @@ Made in November 2019 by [Alexandre Alapetite](https://alexandra.dk/alexandre.al
 *TODO*: Node-RED screenshot
 
  
- 
 
 ---
 
+ 
 
 ## node-red-contrib-json-multi-transformer
 * *Context*: Node-RED node, or command line with [`index-transformer.js`](./index-transformer.js)
@@ -123,10 +123,10 @@ Output:
 ```
 
  
- 
 
 ---
 
+ 
 
 ## node-red-contrib-json-multi-schema-resolver
 * *Context*: Node-RED node, or command line with [`index-resolver.js`](./index-resolver.js)
@@ -196,10 +196,10 @@ Output:
 ```
 
  
- 
 
 ---
 
+ 
 
 ## node-red-contrib-json-multi-schema-validator
 * *Context*: Node-RED node, or command line with [`index-validator.js`](./index-validator.js)
@@ -249,10 +249,10 @@ Output:
 ```
 
  
- 
 
 ---
 
+ 
 
 ## Wiring/Piping all modules together
 The three modules above may be used independently or in combination.
@@ -270,10 +270,10 @@ node ./index-transformer.js 'https://synchronicity.example.net/smart-data-transf
 _Note_: This is the example used for `npm test`
 
  
-   
 
 ---
 
+ 
 
 ## Docker
 *TODO*
