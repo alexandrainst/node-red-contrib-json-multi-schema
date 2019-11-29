@@ -15,7 +15,7 @@
 const RED = require('./RED-mock.js');
 
 //Load our Node-RED module
-const noderedModule = require('./json-multi-schema.js');
+const noderedModule = require('./json-multi-schema-validator.js');
 noderedModule(RED);
 
 //Number of STDIN lines for which we have not received a result yet
@@ -24,7 +24,7 @@ let done = false;
 
 //When our Node-RED module sends/outpus a new message
 RED.node.on('send', msg => {
-	console.log(msg);
+	console.log(JSON.stringify(msg));
 	nbAwaited--;
 	if (done && nbAwaited <= 0) {
 		process.exit(0);
@@ -72,5 +72,3 @@ rl.on('close', () => {
 	console.error('==== STDIN closed ====');
 	done = true;
 });
-
-console.error('==== STDIN started ====');

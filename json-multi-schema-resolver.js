@@ -15,10 +15,10 @@ module.exports = RED => {
 		const jsonCache = require('./json-cache.js')(node);
 
 		async function resolveAsync(payload) {
-			if (!mappings) {
+			if (!mappings || mappings.length <= 0) {
 				mappings = await jsonCache.loadAsync(mappingsUrl);
 			}
-			if (!mappings) {
+			if (!mappings || mappings.length <= 0) {
 				node.warn('Error loading the mappings from : ' + mappingsUrl);
 				return false;
 			}
@@ -26,9 +26,13 @@ module.exports = RED => {
 			for (let mapping of mappings) {
 				if (mapping.query && mapping.cases) {
 					const expression = jsonata(mapping.query);
-					const match = expression.evaluate(payload);
+					let match = expression.evaluate(payload);
 					if (match) {
+						if (match === true) {
+							match = "true";
+						}
 						const result = mapping.cases[match];
+						//TODO: Consider allowing a regex for matches
 						if (result) {
 							schemaUrl = result;
 							break;
@@ -40,6 +44,8 @@ module.exports = RED => {
 		}
 
 		node.on('input', async msg => {
+			delete msg.schemaUrl;
+			delete msg.error;
 			try {
 				const schemaUrl = await resolveAsync(msg.payload);
 				if (schemaUrl != '') {
@@ -50,7 +56,7 @@ module.exports = RED => {
 				}
 			} catch (ex) {
 				msg.payload = null;
-				msg.error = util.format('Failed resolving schema using "%s": %s', mappingsUrl, ex);
+				msg.error = util.format('Error resolving schema using "%s": %s', mappingsUrl, ex);
 			}
 			node.send(msg);
 		});

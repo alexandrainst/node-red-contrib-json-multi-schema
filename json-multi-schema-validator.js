@@ -5,7 +5,7 @@ const util = require('util');
 module.exports = RED => {
 	"use strict";
 
-	function JsonMultiSchemaNode(config) {
+	function JsonMultiSchemaNodeValidator(config) {
 		RED.nodes.createNode(this, config);
 		const node = this;
 
@@ -48,6 +48,7 @@ module.exports = RED => {
 		}
 
 		node.on('input', async msg => {
+			delete msg.error;
 			try {
 				const result = await validateAsync(msg.schemaUrl, msg.payload);
 				if (result === true) {
@@ -64,5 +65,5 @@ module.exports = RED => {
 		});
 	}
 
-	RED.nodes.registerType('json-multi-schema', JsonMultiSchemaNode);
+	RED.nodes.registerType('json-multi-schema-validator', JsonMultiSchemaNodeValidator);
 };

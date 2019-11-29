@@ -1,18 +1,22 @@
 {
 	"name": "node-red-contrib-json-multi-schema",
-	"version": "0.0.4",
-	"description": "JSON Schema validator for Node-RED accepting multiple schemas",
+	"version": "0.0.5",
+	"description": "Generic JSON data pipeline tools, with dynamic transformation (using JSONata rules), resolving JSON Schema (using JSONata rules), and then validation (using JSON Schema). For Node-RED and for command-line.",
 	"main": "index-validate.js",
 	"readmeFilename": "readme.md",
 	"keywords": [
 		"schema",
+		"validate",
+		"transform",
 		"json",
 		"node-red",
 		"node"
 	],
 	"node-red": {
 		"nodes": {
-			"json-multi-schema": "json-multi-schema.js"
+			"json-multi-schema-resolver": "json-multi-schema-resolver.js",
+			"json-multi-schema-transformer": "json-multi-schema-transformer.js",
+			"json-multi-schema-validator": "json-multi-schema-validator.js"
 		}
 	},
 	"author": {
@@ -38,6 +42,6 @@
 		"start": "node ./index.js",
 		"lint": "node ./node_modules/.bin/jshint *.js",
 		"pretest": "npm run-script lint",
-		"test": "echo '{\"schemaUrl\":\"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json\",\"payload\":{\"id\":\"vehicle:WasteManagement:1\",\"type\":\"Vehicle\",\"vehicleType\":\"lorry\",\"category\":[\"municipalServices\"],\"location\":{\"type\":\"Point\",\"coordinates\":[-3.164485591715449,40.62785133667262]},\"name\":\"C Recogida 1\",\"speed\":50,\"cargoWeight\":314,\"serviceStatus\":\"onRoute\",\"serviceProvided\":[\"garbageCollection\",\"wasteContainerCleaning\"],\"areaServed\":\"Centro\",\"refVehicleModel\":\"vehiclemodel:econic\",\"vehiclePlateIdentifier\":\"3456ABC\"}}' | node ./index-validate.js"
+		"test": "echo '{\"payload\":{\"id\":\"vehicle:WasteManagement:1\",\"type\":\"BasicVehicle\",\"vehicleType\":\"lorry\",\"category1\":\"municipalServices\",\"latitude\":-3.164485591715449,\"longitude\":40.62785133667262,\"name\":\"C Recogida 1\",\"speed\":50,\"cargoWeight\":314,\"serviceStatus\":\"onRoute\",\"serviceProvided1\":\"garbageCollection\",\"serviceProvided2\":\"wasteContainerCleaning\",\"areaServed\":\"Centro\",\"refVehicleModel\":\"vehiclemodel:econic\",\"vehiclePlateIdentifier\":\"3456ABC\"}}' | node ./index-transformer.js 'http://test.alapetite.fr/SynchroniCity/smart-data-transforms.json' | node ./index-resolver.js 'http://test.alapetite.fr/SynchroniCity/smart-data-models.json' | node ./index-validate.js"
 	}
 }

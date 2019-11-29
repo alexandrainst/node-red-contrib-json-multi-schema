@@ -13,31 +13,38 @@ module.exports = node => {
 	"use strict";
 	node.debug('Cache path: ' + cachePath);
 
-	async function loadAsync(url) {
-		let json, hash;
+	async function loadAsync(url, parse = true) {
+		let data, json, hash;
 		if (cachePath) {
 			hash = cachePath + crypto.createHash('sha256').update(url).digest('hex') + '.json';
 			try {
-				const data = await readFileAsync(hash, 'utf8');
+				data = await readFileAsync(hash, 'utf8');
 				node.debug('Load JSON from cache: ' + url);
-				json = JSON.parse(data);
+				if (parse) {
+					json = JSON.parse(data);
+				}
 			} catch (ex) {
+				data = false;
 				json = false;
 			}
 		}
-		if (!json) {
+		if (!data) {
 			node.log('Load JSON from Web: ' + url);
 			const res = await fetch(url);
-			json = await res.json();
+			if (parse) {
+				json = await res.json();
+			} else {
+				data = await res.text();
+			}
 			if (cachePath) {
 				try {
-					await writeFileAsync(hash, JSON.stringify(json), 'utf8');
+					await writeFileAsync(hash, parse ? JSON.stringify(json) : data, 'utf8');
 				} catch (ex) {
 					node.warn('Error saving cache of "%s" in "%s"', url, cachePath);
 				}
 			}
 		}
-		return json;
+		return parse ? json : data;
 	}
 
 	return {

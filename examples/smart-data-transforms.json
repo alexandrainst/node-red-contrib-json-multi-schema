@@ -1,0 +1,8 @@
+[
+	{
+		"query": "type='BasicVehicle' and latitude",
+		"cases": {
+			"true": "http://test.alapetite.fr/SynchroniCity/OldVehicleToVehicle.jsonata.js"
+		}
+	}
+]
