@@ -12,7 +12,8 @@ Made in November 2019 by [Alexandre Alapetite](https://alexandra.dk/alexandre.al
 
 *TODO*: Node-RED screenshot
 
-.  
+ 
+ 
 
 ---
 
@@ -121,7 +122,8 @@ Output:
 {"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"transformUrl":"https://synchronicity.example.net/OldVehicleToVehicle.jsonata.js"}
 ```
 
-.  
+ 
+ 
 
 ---
 
@@ -133,8 +135,7 @@ Output:
 * *Output*: The unmodified JSON observation in the `msg.payload` property, and the resolved schema URL in the `msg.schemaUrl` property.
 
 ### Example of input data
-This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Transportation/Vehicle/Vehicle/doc/spec/index.html),
-for which we need to look-up the [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/VehicleModel/schema.json).
+This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Transportation/Vehicle/Vehicle/doc/spec/index.html), for which we need to look-up the [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/VehicleModel/schema.json).
 
 We represent the example as a full Node-RED message, i.e. wrapped into a `{"payload":...}` structure.
 
@@ -194,7 +195,8 @@ Output:
 {"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"}
 ```
 
-.  
+ 
+ 
 
 ---
 
@@ -207,9 +209,7 @@ Output:
 * *Implementation*: Based on [AJV](https://ajv.js.org).
 
 ### Example of input data
-This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Transportation/Vehicle/Vehicle/doc/spec/index.html),
-which we want to validate against its [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/VehicleModel/schema.json),
-which address is provided by the Node-RED property `msg.schemaUrl`.
+This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Transportation/Vehicle/Vehicle/doc/spec/index.html), which we want to validate against its [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/VehicleModel/schema.json), which address is provided by the Node-RED property `msg.schemaUrl`.
 
 ```json
 {
@@ -248,7 +248,8 @@ Output:
 {"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json","error":false}
 ```
 
-.  
+ 
+ 
 
 ---
 
@@ -268,7 +269,8 @@ node ./index-transformer.js 'https://synchronicity.example.net/smart-data-transf
 
 _Note_: This is the example used for `npm test`
 
-.  
+ 
+   
 
 ---
 
