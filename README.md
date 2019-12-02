@@ -21,7 +21,7 @@ License: MIT
 ## node-red-contrib-json-multi-schema-transformer
 * *Context*: Node-RED node, or command line with `index.js multi-schema-transformer --transformsUrl='"https://..."'`
 * *Purpose*: Ability to transform a JSON observation on the fly from whichever format to another format  (e.g. one of the FIWARE NGSI types) using a specified JSONata Schema URL. Schemas are automatically downloaded and cached the first time they are needed.
-* *Configuration*: A Node-RED `transformUrl` property to indicate the URL of a file listing which JSONata file to use for which data input. (See example below).
+* *Configuration*: A Node-RED `transformsUrl` property to indicate the URL of a file listing which JSONata file to use for which data input. (See example below).
 * *Input*: A JSON observation in whichever format in the `msg.payload` property.
 * *Output*: The transformed JSON observation in the `msg.payload` property.
 
@@ -130,7 +130,8 @@ Output:
 
 ## node-red-contrib-json-multi-schema-resolver
 * *Context*: Node-RED node, or command line with `./index.js json-multi-schema-resolver --mappingsUrl='"https://..."'`
-* *Purpose*: Ability to determine the URL of the JSON Schema (e.g. FIWARE NGSI) or JSONata schema to use for a given JSON payload received.
+* *Purpose*: Ability to determine the URL of the JSON Schema (e.g. FIWARE NGSI) to use for a given JSON payload received.
+* *Configuration*: A Node-RED `mappingsUrl` property to indicate the URL of a file listing which JSON Schema to use for which data input. (See example below).
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property.
 * *Output*: The unmodified JSON observation in the `msg.payload` property, and the resolved schema URL in the `msg.schemaUrl` property.
 

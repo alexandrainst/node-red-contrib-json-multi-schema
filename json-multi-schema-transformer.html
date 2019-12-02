@@ -1,0 +1,38 @@
+<script>
+	RED.nodes.registerType('json-multi-schema-transformer', {
+		category: 'function',
+		color: '#00B4FF',
+		defaults: {
+			name: { value: '', },
+			transformsUrl: { value: '', },
+		},
+		inputs: 1,
+		outputs: 1,
+		icon: 'function.png',
+		label: function () {
+			return this.name || 'json-multi-schema-transformer';
+		},
+	});
+</script>
+
+<script type="text/x-red" data-template-name="json-multi-schema-transformer">
+	<div class="form-row">
+		<label for="node-input-name"><i class="icon-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+	</div>
+
+	<div class="form-row">
+		<label for="node-input-transformsUrl"><i class="icon-tag"></i> transformsUrl</label>
+		<input type="text" id="node-input-transformsUrl" placeholder="transformsUrl">
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="json-multi-schema-transformer">
+	<p>
+		The node will transform a given JSON payload received in <code>msg.payload</code> using some JSONata rules.
+		To find the proper rules, the node uses the configuration file which URL is given as a <code>transformsUrl</code> parameter.
+		The URL of the corresponding JSONata file is returned in <code>msg.transformUrl</code>.
+		The transformed payload is returned in <code>msg.payload</code>.
+		Errors are returned on <code>msg.error</code>
+	</p>
+</script>
