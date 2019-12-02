@@ -8,7 +8,7 @@ Appropriate e.g. for working with [FIWARE](https://www.fiware.org/developers/dat
 
 Made in November 2019 by [Alexandre Alapetite](https://alexandra.dk/alexandre.alapetite) at the Alexandra Institute <https://alexandra.dk> for the SynchroniCity European project <https://synchronicity-iot.eu> as a contribution to FIWARE <https://www.fiware.org>.
 
-*TODO*: License
+License: MIT
 
 *TODO*: Node-RED screenshot
 

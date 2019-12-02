@@ -7,7 +7,7 @@
  *
  * @author Alexandre Alapetite <https://alexandra.dk/alexandre.alapetite>
  * @copyright Alexandra Institute <https://alexandra.dk> for the SynchroniCity European project <https://synchronicity-iot.eu> as a contribution to FIWARE <https://www.fiware.org>
- * @license AGPL
+ * @license MIT
  * @version 2019-11-28
  */
 
