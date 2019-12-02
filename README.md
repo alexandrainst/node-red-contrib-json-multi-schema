@@ -6,7 +6,7 @@ Matching rules and transformation rules are written in [JSONata](http://jsonata.
 
 Appropriate e.g. for working with [FIWARE](https://www.fiware.org/developers/data-models/)’s [Smart Data Models](https://smart-data-models.github.io/data-models/).
 
-Made in November 2019 by [Alexandre Alapetite](https://alexandra.dk/alexandre.alapetite) at the Alexandra Institute <https://alexandra.dk> for the SynchroniCity European project <https://synchronicity-iot.eu> as a contribution to FIWARE <https://www.fiware.org>.
+Made in November 2019 by [Alexandre Alapetite](https://alexandra.dk/alexandre.alapetite) at the [Alexandra Institute](https://alexandra.dk) for the [SynchroniCity European project](https://synchronicity-iot.eu) as a contribution to [FIWARE](https://www.fiware.org).
 
 License: MIT
 
@@ -19,7 +19,7 @@ License: MIT
  
 
 ## node-red-contrib-json-multi-schema-transformer
-* *Context*: Node-RED node, or command line with [`index-transformer.js`](./index-transformer.js)
+* *Context*: Node-RED node, or command line with `index.js multi-schema-transformer --transformsUrl='"https://..."'`
 * *Purpose*: Ability to transform a JSON observation on the fly from whichever format to another format  (e.g. one of the FIWARE NGSI types) using a specified JSONata Schema URL. Schemas are automatically downloaded and cached the first time they are needed.
 * *Configuration*: A Node-RED `transformUrl` property to indicate the URL of a file listing which JSONata file to use for which data input. (See example below).
 * *Input*: A JSON observation in whichever format in the `msg.payload` property.
@@ -113,7 +113,7 @@ In the example, this JSONata file is hosted at `https://synchronicity.example.ne
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicleType":"lorry","category1":"municipalServices","latitude":-3.164485591715449,"longitude":40.62785133667262,"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided1":"garbageCollection","serviceProvided2":"wasteContainerCleaning","areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | node ./index-transformer.js 'https://synchronicity.example.net/smart-data-transforms.json'
+echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicleType":"lorry","category1":"municipalServices","latitude":-3.164485591715449,"longitude":40.62785133667262,"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided1":"garbageCollection","serviceProvided2":"wasteContainerCleaning","areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | node ./index.js json-multi-schema-transformer --transformsUrl='"https://synchronicity.example.net/smart-data-transforms.json"'
 ```
 
 Output:
@@ -129,7 +129,7 @@ Output:
  
 
 ## node-red-contrib-json-multi-schema-resolver
-* *Context*: Node-RED node, or command line with [`index-resolver.js`](./index-resolver.js)
+* *Context*: Node-RED node, or command line with `./index.js json-multi-schema-resolver --mappingsUrl='"https://..."'`
 * *Purpose*: Ability to determine the URL of the JSON Schema (e.g. FIWARE NGSI) or JSONata schema to use for a given JSON payload received.
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property.
 * *Output*: The unmodified JSON observation in the `msg.payload` property, and the resolved schema URL in the `msg.schemaUrl` property.
@@ -186,7 +186,7 @@ In the example, this JSON file is hosted at `https://synchronicity.example.net/s
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}' | node ./index-resolver.js 'https://synchronicity.example.net/smart-data-models.json'
+echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}' | node ./index.js json-multi-schema-resolver --mappingsUrl='"https://synchronicity.example.net/smart-data-models.json"'
 ```
 
 Output:
@@ -202,7 +202,7 @@ Output:
  
 
 ## node-red-contrib-json-multi-schema-validator
-* *Context*: Node-RED node, or command line with [`index-validator.js`](./index-validator.js)
+* *Context*: Node-RED node, or command line with `./index.js json-multi-schema-validator`
 * *Purpose*: Ability to validate a JSON observation (e.g. one of the FIWARE NGSI types) on the fly against a specified JSON Schema URL. Schemas are automatically downloaded and cached the first time they are needed.
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property, and the corresponding JSON Schema URL on the `msg.schemaUrl` property.
 * *Output*: The unmodified JSON observation in the `msg.payload` property, and potential validation errors in the `msg.error` property.
@@ -239,7 +239,7 @@ This is an example of [standard payload](https://fiware-datamodels.readthedocs.i
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}' | node ./index-resolver.js 'https://synchronicity.example.net/smart-data-models.json'
+echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"' | node ./index.js json-multi-schema-validator
 ```
 
 Output:
@@ -263,8 +263,7 @@ Cf. screenshot at the top of this document.
 
 ### Piping on command line
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicleType":"lorry","category1":"municipalServices","latitude":-3.164485591715449,"longitude":40.62785133667262,"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided1":"garbageCollection","serviceProvided2":"wasteContainerCleaning","areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | \
-node ./index-transformer.js 'https://synchronicity.example.net/smart-data-transforms.json' | node ./index-resolver.js 'https://synchronicity.example.net/smart-data-models.json' | node ./index-validate.js
+echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicleType":"lorry","category1":"municipalServices","latitude":-3.164485591715449,"longitude":40.62785133667262,"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided1":"garbageCollection","serviceProvided2":"wasteContainerCleaning","areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | node ./index.js json-multi-schema-transformer --transformsUrl='"https://synchronicity.example.net/smart-data-transforms.json"' | node ./index.js json-multi-schema-resolver --mappingsUrl='"https://synchronicity.example.net/smart-data-models.json"' | node ./index.js json-multi-schema-validator
 ```
 
 _Note_: This is the example used for `npm test`
