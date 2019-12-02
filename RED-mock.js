@@ -47,6 +47,62 @@ const RED = {
 			config: {},
 			registerType: (name, f) => new f(RED.nodes.config),
 		},
+		run: () => {
+			//Number of STDIN lines for which we have not received a result yet
+			let nbAwaited = 0;
+			let done = false;
+
+			//When our Node-RED module sends/outpus a new message
+			RED.node.on('send', msg => {
+				console.log(JSON.stringify(msg));
+				nbAwaited--;
+				if (done && nbAwaited <= 0) {
+					process.exit(0);
+				}
+			});
+
+			RED.node.on('error', msg => {
+				console.error(msg);
+			});
+
+			RED.node.on('log', msg => {
+				console.warn(msg);
+			});
+
+
+			const readline = require('readline');
+
+			const rl = readline.createInterface({
+				input: process.stdin,
+				terminal: false,
+			});
+
+			//Read JSON messages from standard input
+			rl.on('line', line => {
+				try {
+					const msg = JSON.parse(line);
+					nbAwaited++;
+					RED.node.input(msg);
+				} catch (ex) {
+					console.error('Invalid JSON input: ' + ex);
+				}
+			});
+
+			rl.on('error', () => {
+				console.error('==== STDIN error ====');
+				done = true;
+			});
+
+			rl.on('pause', () => {
+				console.error('==== STDIN paused ====');
+				done = true;
+			});
+
+			rl.on('close', () => {
+				console.error('==== STDIN closed ====');
+				done = true;
+			});
+		},
 	};
 
 module.exports = RED;
