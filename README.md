@@ -1,14 +1,16 @@
 # node-red-contrib-json-multi-schema
-Set of generic JSON data pipeline tools, suitable from continuous/streaming input, and with dynamic configuration.
+Set of generic JSON data pipeline tools, suitable for continuous/streaming input, and with dynamic configuration.
 
-All the modules are made for [Node-RED](https://nodered.org) but can alternatively be run from command-line using standard input/output.
+Three distinct nodes allow transforming, resolving schemas, and validating different types of JSON inputs.
+
+The nodes are made for [Node-RED](https://nodered.org) but can alternatively be run from command-line using standard input/output.
 Matching rules and transformation rules are written in [JSONata](http://jsonata.org) (JSON query and transformation language).
 
 Appropriate e.g. for working with [FIWARE](https://www.fiware.org/developers/data-models/)’s [Smart Data Models](https://smart-data-models.github.io/data-models/).
 
-Made in November 2019 by [Alexandre Alapetite](https://alexandra.dk/alexandre.alapetite) at the [Alexandra Institute](https://alexandra.dk) for the [SynchroniCity European project](https://synchronicity-iot.eu) as a contribution to [FIWARE](https://www.fiware.org).
+Made by [Alexandre Alapetite](https://alexandra.dk/alexandre.alapetite) at the [Alexandra Institute](https://alexandra.dk) for the [SynchroniCity European project](https://synchronicity-iot.eu) as a contribution to [FIWARE](https://www.fiware.org).
 
-License: [MIT](LICENSE.md)
+License: [MIT](LICENSE.md), 2019
 
 Here is an example of full Node-RED: [Node-RED_example_of_flow.json](examples/Node-RED_example_of_flow.json)
 
