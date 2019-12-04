@@ -30,7 +30,7 @@
 <script type="text/x-red" data-help-name="json-multi-schema-transformer">
 	<ul>
 		<li>The node will transform a given JSON payload received in <code>msg.payload</code> using some JSONata rules.</li>
-		<li>To find the proper rules, the node uses the configuration file which URL is given as a <code>transformsUrl</code> parameter.</li>
+		<li>To find the proper rules, the node uses the configuration file which URL is given as a <code>transformsUrl</code> property.</li>
 		<li>The URL of the corresponding JSONata file is returned in <code>msg.transformUrl</code>.</li>
 		<li>The transformed payload is returned in <code>msg.payload</code>.</li>
 		<li>Errors are returned on <code>msg.error</code></li>

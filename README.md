@@ -8,9 +8,11 @@ Appropriate e.g. for working with [FIWARE](https://www.fiware.org/developers/dat
 
 Made in November 2019 by [Alexandre Alapetite](https://alexandra.dk/alexandre.alapetite) at the [Alexandra Institute](https://alexandra.dk) for the [SynchroniCity European project](https://synchronicity-iot.eu) as a contribution to [FIWARE](https://www.fiware.org).
 
-License: MIT
+License: [MIT](LICENSE.md)
 
-*TODO*: Node-RED screenshot
+Here is an example of full Node-RED: [Node-RED_example_of_flow.json](examples/Node-RED_example_of_flow.json)
+
+![Node-RED flow](examples/Node-RED_example_of_flow.png)
 
  
 
@@ -246,7 +248,7 @@ This is an example of [standard payload](https://fiware-datamodels.readthedocs.i
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"' | node ./index.js json-multi-schema-validator
+echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"}' | node ./index.js json-multi-schema-validator
 ```
 
 Output:

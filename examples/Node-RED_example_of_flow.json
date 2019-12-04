@@ -1,0 +1,170 @@
+[
+    {
+        "id": "739f17c6.5cdae8",
+        "type": "inject",
+        "z": "51af8c53.929c6c",
+        "name": "Non-standard (JSON) message",
+        "topic": "",
+        "payload": "{\"id\":\"vehicle:WasteManagement:1\",\"type\":\"BasicVehicle\",\"vehicleType\":\"lorry\",\"category1\":\"municipalServices\",\"latitude\":-3.164485591715449,\"longitude\":40.62785133667262,\"name\":\"C Recogida 1\",\"speed\":50,\"cargoWeight\":314,\"serviceStatus\":\"onRoute\",\"serviceProvided1\":\"garbageCollection\",\"serviceProvided2\":\"wasteContainerCleaning\",\"areaServed\":\"Centro\",\"refVehicleModel\":\"vehiclemodel:econic\",\"vehiclePlateIdentifier\":\"3456ABC\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 210,
+        "y": 820,
+        "wires": [
+            [
+                "707f7dae.377adc"
+            ]
+        ]
+    },
+    {
+        "id": "707f7dae.377adc",
+        "type": "json-multi-schema-transformer",
+        "z": "51af8c53.929c6c",
+        "name": "",
+        "transformsUrl": "http://test.alapetite.fr/SynchroniCity/smart-data-transforms.json",
+        "x": 590,
+        "y": 820,
+        "wires": [
+            [
+                "1a287ba9.00e0d4"
+            ]
+        ]
+    },
+    {
+        "id": "1a287ba9.00e0d4",
+        "type": "json-multi-schema-resolver",
+        "z": "51af8c53.929c6c",
+        "name": "",
+        "mappingsUrl": "http://test.alapetite.fr/SynchroniCity/smart-data-models.json",
+        "x": 580,
+        "y": 900,
+        "wires": [
+            [
+                "80ef3fce.aa4c2"
+            ]
+        ]
+    },
+    {
+        "id": "80ef3fce.aa4c2",
+        "type": "json-multi-schema-validator",
+        "z": "51af8c53.929c6c",
+        "name": "",
+        "x": 580,
+        "y": 980,
+        "wires": [
+            [
+                "935312e9.392738"
+            ]
+        ]
+    },
+    {
+        "id": "935312e9.392738",
+        "type": "function",
+        "z": "51af8c53.929c6c",
+        "name": "Result formatter based on \"msg.error\"",
+        "func": "if (msg.error) {\n    msg.payload = '❌ Invalid according to ' + msg.schemaUrl + ' : ' + msg.error;\n} else {\n    msg.payload = '✔ Valid️ according to ' + msg.schemaUrl;\n}\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 610,
+        "y": 1060,
+        "wires": [
+            [
+                "e3a048d.4f836b8"
+            ]
+        ]
+    },
+    {
+        "id": "e3a048d.4f836b8",
+        "type": "debug",
+        "z": "51af8c53.929c6c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 890,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "fc96cea3.20e23",
+        "type": "inject",
+        "z": "51af8c53.929c6c",
+        "name": "Standard message with unknown schema",
+        "topic": "",
+        "payload": "{\"id\":\"vehicle:WasteManagement:1\",\"type\":\"Vehicle\",\"vehicleType\":\"lorry\",\"category\":[\"municipalServices\"],\"location\":{\"type\":\"Point\",\"coordinates\":[40.62785133667262,-3.164485591715449]},\"name\":\"C Recogida 1\",\"speed\":50,\"cargoWeight\":314,\"serviceStatus\":\"onRoute\",\"serviceProvided\":[\"garbageCollection\",\"wasteContainerCleaning\"],\"areaServed\":\"Centro\",\"refVehicleModel\":\"vehiclemodel:econic\",\"vehiclePlateIdentifier\":\"3456ABC\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 240,
+        "y": 900,
+        "wires": [
+            [
+                "1a287ba9.00e0d4"
+            ]
+        ]
+    },
+    {
+        "id": "364c2f92.39bff",
+        "type": "inject",
+        "z": "51af8c53.929c6c",
+        "name": "Trigger",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 130,
+        "y": 1060,
+        "wires": [
+            [
+                "c16edc29.b8e628"
+            ]
+        ]
+    },
+    {
+        "id": "c16edc29.b8e628",
+        "type": "function",
+        "z": "51af8c53.929c6c",
+        "name": "Standard message with known schema",
+        "func": "msg.payload = {\n        \"id\": \"vehicle:WasteManagement:1\",\n        \"type\": \"Vehicle\",\n        \"vehicleType\": \"lorry\",\n        \"category\": [\n            \"municipalServices\"\n        ],\n        \"location\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n                40.62785133667262,\n                -3.164485591715449\n            ]\n        },\n        \"name\": \"C Recogida 1\",\n        \"speed\": 50,\n        \"cargoWeight\": 314,\n        \"serviceStatus\": \"onRoute\",\n        \"serviceProvided\": [\n            \"garbageCollection\",\n            \"wasteContainerCleaning\"\n        ],\n        \"areaServed\": \"Centro\",\n        \"refVehicleModel\": \"vehiclemodel:econic\",\n        \"vehiclePlateIdentifier\": \"3456ABC\"\n    };\nmsg.schemaUrl = \"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json\";\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 240,
+        "y": 980,
+        "wires": [
+            [
+                "80ef3fce.aa4c2"
+            ]
+        ]
+    },
+    {
+        "id": "abd29a0f.661788",
+        "type": "comment",
+        "z": "51af8c53.929c6c",
+        "name": "using \"Mappings URL\" property",
+        "info": "",
+        "x": 890,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "7f14c104.4f98e8",
+        "type": "comment",
+        "z": "51af8c53.929c6c",
+        "name": "using \"Transforms URL\" property",
+        "info": "",
+        "x": 890,
+        "y": 820,
+        "wires": []
+    }
+]
