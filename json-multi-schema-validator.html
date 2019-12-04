@@ -17,10 +17,13 @@
 <script type="text/x-red" data-template-name="json-multi-schema-validator">
 	<div class="form-row">
 		<label for="node-input-name"><i class="icon-tag"></i> Name</label>
-		<input type="text" id="node-input-name" placeholder="Name">
+		<input type="text" id="node-input-name" placeholder="Name" />
 	</div>
 </script>
 
 <script type="text/x-red" data-help-name="json-multi-schema-validator">
-	<p>The node will validate `msg.payload` against `msg.schemaUrl` JSON Schema URL. Errors are returned on msg.error</p>
+	<ul>
+		<li>The node will validate the JSON data given in <code>msg.payload</code> against the JSON Schema URL given in <code>msg.schemaUrl</code></li>
+		<li>Errors are returned on <code>msg.error</code></li>
+	</ul>
 </script>

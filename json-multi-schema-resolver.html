@@ -18,20 +18,41 @@
 <script type="text/x-red" data-template-name="json-multi-schema-resolver">
 	<div class="form-row">
 		<label for="node-input-name"><i class="icon-tag"></i> Name</label>
-		<input type="text" id="node-input-name" placeholder="Name">
+		<input type="text" id="node-input-name" placeholder="Name" />
 	</div>
 
 	<div class="form-row">
-		<label for="node-input-mappingsUrl"><i class="icon-tag"></i> mappingsUrl</label>
-		<input type="text" id="node-input-mappingsUrl" placeholder="mappingsUrl">
+		<label for="node-input-mappingsUrl"><i class="icon-tag"></i> Mappings URL</label>
+		<input type="text" id="node-input-mappingsUrl" placeholder="mappingsUrl" />
 	</div>
 </script>
 
 <script type="text/x-red" data-help-name="json-multi-schema-resolver">
-	<p>
-		The node will try to determine the URL of the JSON Schema to use for a given JSON payload received in <code>msg.payload</code>.
-		To do so, the node uses the configuration file which URL is given as a <code>mappingsUrl</code> parameter.
-		The URL of the corresponding JSON Schema is returned in <code>msg.schemaUrl</code>.
-		Errors are returned on <code>msg.error</code>
-	</p>
+	<ul>
+		<li>The node will try to determine the URL of the JSON Schema to use for a given JSON payload received in <code>msg.payload</code></li>
+		<li>To do so, the node uses the configuration file which URL is given as a <code>mappingsUrl</code> property.</li>
+		<li>The URL of the corresponding JSON Schema is returned in <code>msg.schemaUrl</code>.</li>
+		<li>The original JSON data is kept unaltered in <code>msg.payload</code></li>
+		<li>Errors are returned on <code>msg.error</code></li>
+	</ul>
+	<p>Example of configuration file containing the </p>
+	<pre>
+[
+	{
+		"query": "type",
+		"cases": {
+			"AeroAllergenObserved": "https://smart-data-models.github.io/data-models/specs/Environment/AeroAllergenObserved/schema.json",
+			...
+			"Vehicle": "https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json",
+			"WasteContainer": "https://smart-data-models.github.io/data-models/specs/WasteManagement/WasteContainer/schema.json",
+		}
+	},
+	{
+		"query": "...",
+		"cases": {
+			...
+		}
+	}
+]
+	</pre>
 </script>

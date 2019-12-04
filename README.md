@@ -179,6 +179,12 @@ In the example, this JSON file is hosted at `https://synchronicity.example.net/s
 			"Vehicle": "https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json",
 			"WasteContainer": "https://smart-data-models.github.io/data-models/specs/WasteManagement/WasteContainer/schema.json",
 		}
+	},
+	{
+		"query": "...",
+		"cases": {
+			...
+		}
 	}
 ]
 ```
