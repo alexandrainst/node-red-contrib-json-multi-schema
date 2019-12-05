@@ -60,7 +60,7 @@ We represent the example as a full Node-RED message, i.e. wrapped into a `{"payl
 
 ### Example of configuration file listing the transformations
 
-In the example, this JSON file is hosted at `https://synchronicity.example.net/smart-data-transforms.json`
+In the example, this JSON file is hosted at `https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json`
 
 `query` is a [JSONata expression](http://docs.jsonata.org/simple). In this example, it will match the input data above.
 
@@ -69,13 +69,13 @@ In the example, this JSON file is hosted at `https://synchronicity.example.net/s
 	{
 		"query": "type='BasicVehicle' and latitude",
 		"cases": {
-			"true": "https://synchronicity.example.net/OldVehicleToVehicle.jsonata.js"
+			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/OldVehicleToVehicle.jsonata.js"
 		}
 	},
 	{
 		"query": "type='WeatherObserved' and latitude and longitude",
 		"cases": {
-			"true": "https://synchronicity.example.net/OldWeatherObservedToVehicle.jsonata.js"
+			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/OldWeatherObservedToVehicle.jsonata.js"
 		}
 	}
 ]
@@ -83,7 +83,7 @@ In the example, this JSON file is hosted at `https://synchronicity.example.net/s
 
 ### Example of JSONata transformation
 
-In the example, this JSONata file is hosted at `https://synchronicity.example.net/OldVehicleToVehicle.jsonata.js`
+In the example, this JSONata file is hosted at `https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/OldVehicleToVehicle.jsonata.js`
 
 ```js
 {
@@ -118,13 +118,13 @@ In the example, this JSONata file is hosted at `https://synchronicity.example.ne
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicleType":"lorry","category1":"municipalServices","latitude":-3.164485591715449,"longitude":40.62785133667262,"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided1":"garbageCollection","serviceProvided2":"wasteContainerCleaning","areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | node ./index.js json-multi-schema-transformer --transformsUrl='"https://synchronicity.example.net/smart-data-transforms.json"'
+echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicleType":"lorry","category1":"municipalServices","latitude":-3.164485591715449,"longitude":40.62785133667262,"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided1":"garbageCollection","serviceProvided2":"wasteContainerCleaning","areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | node ./index.js json-multi-schema-transformer --transformsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"'
 ```
 
 Output:
 
 ```json
-{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"transformUrl":"https://synchronicity.example.net/OldVehicleToVehicle.jsonata.js"}
+{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"transformUrl":"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/OldVehicleToVehicle.jsonata.js"}
 ```
 
  
@@ -170,7 +170,7 @@ We represent the example as a full Node-RED message, i.e. wrapped into a `{"payl
 
 ### Example of configuration file listing the JSON schemas
 
-In the example, this JSON file is hosted at `https://synchronicity.example.net/smart-data-models.json`
+In the example, this JSON file is hosted at `https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json`
 
 `query` is a [JSONata expression](http://docs.jsonata.org/simple). In this example, it will match the input data above on `"type":"Vehicle"`
 
@@ -198,7 +198,7 @@ In the example, this JSON file is hosted at `https://synchronicity.example.net/s
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | node ./index.js json-multi-schema-resolver --mappingsUrl='"https://synchronicity.example.net/smart-data-models.json"'
+echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"'
 ```
 
 Output:
@@ -275,7 +275,7 @@ Cf. screenshot at the top of this document.
 
 ### Piping on command line
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicleType":"lorry","category1":"municipalServices","latitude":-3.164485591715449,"longitude":40.62785133667262,"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided1":"garbageCollection","serviceProvided2":"wasteContainerCleaning","areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | node ./index.js json-multi-schema-transformer --transformsUrl='"https://synchronicity.example.net/smart-data-transforms.json"' | node ./index.js json-multi-schema-resolver --mappingsUrl='"https://synchronicity.example.net/smart-data-models.json"' | node ./index.js json-multi-schema-validator
+echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicleType":"lorry","category1":"municipalServices","latitude":-3.164485591715449,"longitude":40.62785133667262,"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided1":"garbageCollection","serviceProvided2":"wasteContainerCleaning","areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | node ./index.js json-multi-schema-transformer --transformsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"' | node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"' | node ./index.js json-multi-schema-validator
 ```
 
 _Note_: This is the example used for `npm test`
