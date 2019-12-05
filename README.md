@@ -294,14 +294,21 @@ _Note_: This is the example used for `npm test`
 docker build --tag synchronicityiot/node-red-contrib-json-multi-schema .
 ```
 
+### Persistant cache
+To allow keeping a local copy of the remote JSON configuration files, transformations, and schemas.
+
+```sh
+docker volume create tmp-schemas
+```
+
 ### Run
 
 ```sh
-docker run --rm synchronicityiot/node-red-contrib-json-multi-schema [name-of-node] --parameter='...'
+docker run -v tmp-schemas:/tmp --rm synchronicityiot/node-red-contrib-json-multi-schema [name-of-node] --parameter='...'
 ```
 
 Example for a validation (same principle for transforming and resolving):
 
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"}' | docker run --rm synchronicityiot/node-red-contrib-json-multi-schema json-multi-schema-validator
+echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"}' | docker run -i -v tmp-schemas:/tmp --rm synchronicityiot/node-red-contrib-json-multi-schema json-multi-schema-validator
 ```
