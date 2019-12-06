@@ -5,7 +5,7 @@
  */
 
 //Location of disk copy of retrieved JSON documents
-const cachePath = process.env.CACHE_PATH || '/tmp/';	//TODO: use better location for cache
+const cachePath = process.env.SCHEMAS_CACHE_PATH || '/tmp/';	//TODO: use better location for cache
 
 const crypto = require('crypto');
 const fetch = require('node-fetch');

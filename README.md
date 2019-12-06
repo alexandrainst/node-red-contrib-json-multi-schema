@@ -286,6 +286,17 @@ _Note_: This is the example used for `npm test`
 
  
 
+## Caching
+
+A disk copy of the downloaded JSON and JSONata documents is kept in cache on disk.
+By default, the cache path is `/tmp/` but that can be changed with the environment variable `SCHEMAS_CACHE_PATH`
+
+ 
+
+---
+
+ 
+
 ## Docker
 
 ### Build
