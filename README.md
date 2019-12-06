@@ -34,7 +34,7 @@ Here is an example of full Node-RED: [Node-RED_example_of_flow.json](examples/No
 
 This is an example of non-standard payload, which needs to be transformed into a standard format.
 
-We represent the example as a full Node-RED message, i.e. wrapped into a `{"payload":...}` structure.
+We represent the example as a full Node-RED message, i.e. wrapped into a `{"payload":...}` structure (cf. `jq` version further down).
 
 ```json
 {
@@ -279,6 +279,21 @@ echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicl
 ```
 
 _Note_: This is the example used for `npm test`
+
+### JSON in Node-RED format
+[`jq`](https://stedolan.github.io/jq/) may be used to format a standard payload into a Node-RED payload:
+
+For instance if the input is a list of observations wrapped into a JSON array:
+
+```sh
+jq -c '.[] | {"payload":.}'
+```
+
+Example from an URL:
+
+```sh
+curl 'https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?limit=5&options=keyValues' | jq -c '.[] | {"payload":.}' | node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"' | node ./index.js json-multi-schema-validator | jq -c .
+```
 
  
 
