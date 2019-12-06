@@ -1,4 +1,9 @@
 /* jshint esversion:8, node:true, strict:true */
+/**
+ * Node-RED node transforming a JSON observation from whichever format to another format using a specified JSONata URL.
+ * Schemas are automatically downloaded and cached the first time they are needed.
+ * JSONata expressions are cached in memory.
+ */
 
 const jsonata = require('jsonata');
 const util = require('util');
@@ -10,25 +15,23 @@ module.exports = RED => {
 		RED.nodes.createNode(this, config);
 		const node = this;
 		const transformsUrl = config.transformsUrl;
-		let transforms = [];
 
 		const jsonCache = require('./json-cache.js')(node);
 
+		/**
+		 * Find the URL to the JSONata expression to use for the given payload.
+		 */
 		async function resolveAsync(payload) {
-			if (!transforms || transforms.length <= 0) {
-				transforms = await jsonCache.loadAsync(transformsUrl);
-			}
-			if (!transforms || transforms.length <= 0) {
-				node.warn('Error loading the transforms from : ' + transformsUrl);
-				return false;
-			}
+			const transforms = await jsonCache.loadAsync(transformsUrl);
 			let transformUrl = '';
-			for (let mapping of transforms) {
+			//TODO: Set node status
+			for (const mapping of transforms) {
 				if (mapping.query && mapping.cases) {
 					const expression = jsonata(mapping.query);
 					let match = expression.evaluate(payload);
 					if (match) {
 						if (match === true) {
+							//Special case for boolean
 							match = "true";
 						}
 						const result = mapping.cases[match];
@@ -42,11 +45,42 @@ module.exports = RED => {
 			return transformUrl;
 		}
 
+		//Cache of JSONata expressions
+		const jsonatas = {};
+
+		/**
+		 * Transform the given payload with the JSONata expression given in URL.
+		 */
 		async function transformAsync(payload, transformUrl) {
 			if (transformUrl) {
-				const transform = await jsonCache.loadAsync(transformUrl, false);
-				const expression = jsonata(transform);
-				return expression.evaluate(payload);
+				let jsonataExpression;
+				let jsonataCache = jsonatas[transformUrl];
+				if (jsonataCache) {
+					if (jsonataCache.expression === null) {
+						//Wait for another task to be done building the same JSONata, so that we can use its cache
+						await new Promise((resolve, reject) => jsonataCache.mutexQueue.push(resolve));
+					}
+					jsonataExpression = jsonataCache.expression;
+				} else {
+					//Build JSONata expression for the given transformation URL
+					jsonataCache = { expression: null, mutexQueue: [] };
+					jsonatas[transformUrl] = jsonataCache;
+					const transform = await jsonCache.loadAsync(transformUrl, false);
+					node.debug('Build JSONata expression for: ' + transformUrl);
+					jsonataExpression = jsonata(transform);
+					jsonataCache.expression = jsonataExpression;
+
+					//Resume tasks waiting for the same JSONata expression
+					let next;
+					while ((next = jsonataCache.mutexQueue.shift()) != undefined) {
+						next();	//Resolve promise
+					}
+				}
+
+				if (jsonataExpression) {
+					//Perform transformation
+					return jsonataExpression.evaluate(payload);
+				}
 			}
 			return false;
 		}
