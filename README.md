@@ -281,7 +281,7 @@ echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicl
 _Note_: This is the example used for `npm test`
 
 ### JSON in Node-RED format
-[`jq`](https://stedolan.github.io/jq/) may be used to format a standard payload into a Node-RED payload:
+[`jq`](https://stedolan.github.io/jq/) may be used to break down and format a standard payload into a Node-RED payload:
 
 For instance if the input is a list of observations wrapped into a JSON array:
 
