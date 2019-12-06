@@ -98,11 +98,10 @@ module.exports = node => {
 
 		//Resume tasks waiting for the same URL
 		let next;
-		if (mutexQueue[url] && (next = mutexQueue[url].shift()) != undefined) {
+		while ((next = mutexQueue[url].shift()) != undefined) {
 			next();	//Resolve promise
-		} else {
-			delete mutexQueue[url];
 		}
+		delete mutexQueue[url];
 
 		return parse ? json : text;
 	}
