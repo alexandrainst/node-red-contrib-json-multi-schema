@@ -13,6 +13,8 @@ Made by [Alexandre Alapetite](https://alexandra.dk/alexandre.alapetite) at the [
 
 License: [MIT](LICENSE.md), 2019
 
+Requirements: Any platform where [Node-RED](https://nodered.org) (1.0+) or [Node.js](https://nodejs.org) (10.0+) can run.
+
 Here is an example of full Node-RED: [Node-RED_example_of_flow.json](examples/Node-RED_example_of_flow.json)
 
 ![Node-RED flow](examples/Node-RED_example_of_flow.png)
