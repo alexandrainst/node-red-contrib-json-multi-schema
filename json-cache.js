@@ -84,8 +84,10 @@ module.exports = node => {
 			const res = await fetch(url);
 			if (parse) {
 				json = await res.json();
+				ramCaches[url].json = json;
 			} else {
 				text = await res.text();
+				ramCaches[url].text = text;
 			}
 			if (cachePath) {
 				try {
