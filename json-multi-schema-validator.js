@@ -13,6 +13,9 @@ module.exports = RED => {
 		RED.nodes.createNode(this, config);
 		const node = this;
 
+		let lastStatusError = true;
+		node.status({ fill:'grey', shape:'ring', text:'Uninitialized', });
+
 		const jsonCache = require('./json-cache.js')(node);
 
 		//Ajv: Another JSON Schema Validator
@@ -66,9 +69,10 @@ module.exports = RED => {
 					}
 				} catch (ex) {
 					validatorCache.validator = false;
+					lastStatusError = true;
+					node.status({ fill:'red', shape:'ring', text:'Error', });
 					node.error('Error compiling schema: ' + schemaUrl + ' : ' + ex);
 				}
-				//TODO: Set node status
 
 				//Resume tasks waiting for the same validator
 				let next;
@@ -90,7 +94,13 @@ module.exports = RED => {
 					msg.payload = null;
 					msg.error = util.format('Failed validatation against "%s": %s', msg.schemaUrl, result);
 				}
+				if (lastStatusError) {
+					node.status({ fill:'green', shape:'dot', text:'OK', });
+					lastStatusError = false;
+				}
 			} catch (ex) {
+				lastStatusError = true;
+				node.status({ fill:'red', shape:'ring', text:'Error', });
 				msg.payload = null;
 				msg.error = util.format('Failed validatation against "%s": %s', msg.schemaUrl, ex);
 			}

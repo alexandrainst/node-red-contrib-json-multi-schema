@@ -16,6 +16,9 @@ module.exports = RED => {
 		const node = this;
 		const transformsUrl = config.transformsUrl;
 
+		let lastStatusError = true;
+		node.status({ fill:'grey', shape:'ring', text:'Uninitialized', });
+
 		const jsonCache = require('./json-cache.js')(node);
 
 		/**
@@ -24,7 +27,6 @@ module.exports = RED => {
 		async function resolveAsync(payload) {
 			const transforms = await jsonCache.loadAsync(transformsUrl);
 			let transformUrl = '';
-			//TODO: Set node status
 			for (const mapping of transforms) {
 				if (mapping.query && mapping.cases) {
 					const expression = jsonata(mapping.query);
@@ -99,11 +101,19 @@ module.exports = RED => {
 						msg.payload = null;
 						msg.error = util.format('Failed tranforming using "%s"', transformsUrl);
 					}
+					if (lastStatusError) {
+						node.status({ fill:'green', shape:'dot', text:'OK', });
+						lastStatusError = false;
+					}
 				} else {
+					lastStatusError = true;
+					node.status({ fill:'red', shape:'ring', text:'Error', });
 					msg.payload = null;
 					msg.error = util.format('Failed resolving tranforms using "%s"', transformsUrl);
 				}
 			} catch (ex) {
+				lastStatusError = true;
+				node.status({ fill:'red', shape:'ring', text:'Error', });
 				msg.payload = null;
 				msg.error = util.format('Error tranforming using "%s": %s', transformsUrl, ex);
 			}

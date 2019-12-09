@@ -15,6 +15,9 @@ module.exports = RED => {
 		const node = this;
 		const mappingsUrl = config.mappingsUrl;
 
+		let lastStatusError = true;
+		node.status({ fill:'grey', shape:'ring', text:'Uninitialized', });
+
 		const jsonCache = require('./json-cache.js')(node);
 
 		/**
@@ -23,7 +26,6 @@ module.exports = RED => {
 		async function resolveAsync(payload) {
 			const mappings = await jsonCache.loadAsync(mappingsUrl);
 			let schemaUrl = '';
-			//TODO: Set node status
 			for (let mapping of mappings) {
 				if (mapping.query && mapping.cases) {
 					const expression = jsonata(mapping.query);
@@ -55,7 +57,13 @@ module.exports = RED => {
 					msg.payload = null;
 					msg.error = util.format('Failed resolving schema using "%s"', mappingsUrl);
 				}
+				if (lastStatusError) {
+					node.status({ fill:'green', shape:'dot', text:'OK', });
+					lastStatusError = false;
+				}
 			} catch (ex) {
+				lastStatusError = true;
+				node.status({ fill:'red', shape:'ring', text:'Error', });
 				msg.payload = null;
 				msg.error = util.format('Error resolving schema using "%s": %s', mappingsUrl, ex);
 			}
