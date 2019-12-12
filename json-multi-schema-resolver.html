@@ -23,7 +23,8 @@
 
 	<div class="form-row">
 		<label for="node-input-mappingsUrl"><i class="icon-tag"></i> Mappings URL</label>
-		<input type="text" id="node-input-mappingsUrl" placeholder="mappingsUrl" />
+		<input type="text" id="node-input-mappingsUrl" placeholder="mappingsUrl"
+			placeholder="https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json" />
 	</div>
 </script>
 
@@ -36,7 +37,7 @@
 		<li>The original JSON data is kept unaltered in <code>msg.payload</code></li>
 		<li>Errors are returned on <code>msg.error</code></li>
 	</ul>
-	<p>Example of configuration file containing the </p>
+	<p>Example of configuration file containing the mappings of schemas: </p>
 	<pre>
 [
 	{

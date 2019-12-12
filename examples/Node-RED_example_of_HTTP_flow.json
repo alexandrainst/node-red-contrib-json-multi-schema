@@ -1,0 +1,160 @@
+[
+    {
+        "id": "587d0d64.709bac",
+        "type": "http in",
+        "z": "51af8c53.929c6c",
+        "name": "",
+        "url": "/schemas/:schema",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 1180,
+        "y": 740,
+        "wires": [
+            [
+                "55807652.b2dd38"
+            ]
+        ]
+    },
+    {
+        "id": "d222ec97.269898",
+        "type": "http response",
+        "z": "51af8c53.929c6c",
+        "name": "JSON response",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 1860,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "eb83d168.8f37b8",
+        "type": "template",
+        "z": "51af8c53.929c6c",
+        "name": "smart-data-models.json",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "json",
+        "syntax": "plain",
+        "template": "[\n\t{\n\t\t\"query\": \"type\",\n\t\t\"cases\": {\n\t\t\t\"AeroAllergenObserved\": \"https://smart-data-models.github.io/data-models/specs/Environment/AeroAllergenObserved/schema.json\",\n\t\t\t\"AgriApp\": \"https://smart-data-models.github.io/data-models/specs/AgriFood/AgriApp/schema.json\",\n\t\t\t\"AgriCrop\": \"https://smart-data-models.github.io/data-models/specs/AgriFood/AgriCrop/schema.json\",\n\t\t\t\"AgriFarm\": \"https://smart-data-models.github.io/data-models/specs/AgriFood/AgriFarm/schema.json\",\n\t\t\t\"AgriGreenhouse\": \"https://smart-data-models.github.io/data-models/specs/AgriFood/AgriGreenhouse/schema.json\",\n\t\t\t\"AgriParcel\": \"https://smart-data-models.github.io/data-models/specs/AgriFood/AgriParcel/schema.json\",\n\t\t\t\"AgriParcelOperation\": \"https://smart-data-models.github.io/data-models/specs/AgriFood/AgriParcelOperation/schema.json\",\n\t\t\t\"AgriParcelRecord\": \"https://smart-data-models.github.io/data-models/specs/AgriFood/AgriParcelRecord/schema.json\",\n\t\t\t\"AgriPest\": \"https://smart-data-models.github.io/data-models/specs/AgriFood/AgriPest/schema.json\",\n\t\t\t\"AgriProductType\": \"https://smart-data-models.github.io/data-models/specs/AgriFood/AgriProductType/schema.json\",\n\t\t\t\"AirQualityObserved\": \"https://smart-data-models.github.io/data-models/specs/Environment/AirQualityObserved/schema.json\",\n\t\t\t\"Alert\": \"https://smart-data-models.github.io/data-models/specs/Alert/alert-schema.json\",\n\t\t\t\"Animal\": \"https://smart-data-models.github.io/data-models/specs/AgriFood/Animal/schema.json\",\n\t\t\t\"ArrivalEstimation\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/ArrivalEstimation/schema.json\",\n\t\t\t\"Beach\": \"https://smart-data-models.github.io/data-models/specs/PointOfInterest/Beach/schema.json\",\n\t\t\t\"BikeHireDockingStation\": \"https://smart-data-models.github.io/data-models/specs/Transportation/Bike/BikeHireDockingStation/schema.json\",\n\t\t\t\"Building\": \"https://smart-data-models.github.io/data-models/specs/Building/Building/schema.json\",\n\t\t\t\"BuildingOperation\": \"https://smart-data-models.github.io/data-models/specs/Building/BuildingOperation/schema.json\",\n\t\t\t\"CrowdFlowObserved\": \"https://smart-data-models.github.io/data-models/specs/Transportation/CrowdFlowObserved/schema.json\",\n\t\t\t\"Device\": \"https://smart-data-models.github.io/data-models/specs/Device/Device/schema.json\",\n\t\t\t\"DeviceModel\": \"https://smart-data-models.github.io/data-models/specs/Device/DeviceModel/schema.json\",\n\t\t\t\"EVChargingStation\": \"https://smart-data-models.github.io/data-models/specs/Transportation/EVChargingStation/schema.json\",\n\t\t\t\"FlowerBed\": \"https://smart-data-models.github.io/data-models/specs/ParksAndGardens/FlowerBed/schema.json\",\n\t\t\t\"Garden\": \"https://smart-data-models.github.io/data-models/specs/ParksAndGardens/Garden/schema.json\",\n\t\t\t\"GreenspaceRecord\": \"https://smart-data-models.github.io/data-models/specs/ParksAndGardens/GreenspaceRecord/schema.json\",\n\t\t\t\"GtfsAccessPoint\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsAccessPoint/schema.json\",\n\t\t\t\"GtfsAgency\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsAgency/schema.json\",\n\t\t\t\"GtfsCalendarDateRule\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsCalendarDateRule/schema.json\",\n\t\t\t\"GtfsCalendarRule\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsCalendarRule/schema.json\",\n\t\t\t\"GtfsFrequency\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsFrequency/schema.json\",\n\t\t\t\"GtfsRoute\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsRoute/schema.json\",\n\t\t\t\"GtfsService\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsService/schema.json\",\n\t\t\t\"GtfsShape\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsShape/schema.json\",\n\t\t\t\"GtfsStation\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsStation/schema.json\",\n\t\t\t\"GtfsStop\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsStop/schema.json\",\n\t\t\t\"GtfsStopTime\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsStopTime/schema.json\",\n\t\t\t\"GtfsTransferRule\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsTransferRule/schema.json\",\n\t\t\t\"GtfsTrip\": \"https://smart-data-models.github.io/data-models/specs/UrbanMobility/GtfsTrip/schema.json\",\n\t\t\t\"KeyPerformanceIndicator\": \"https://smart-data-models.github.io/data-models/specs/KeyPerformanceIndicator/schema.json\",\n\t\t\t\"Museum\": \"https://smart-data-models.github.io/data-models/specs/PointOfInterest/Museum/schema.json\",\n\t\t\t\"NoiseLevelObserved\": \"https://smart-data-models.github.io/data-models/specs/Environment/NoiseLevelObserved/schema.json\",\n\t\t\t\"OffStreetParking\": \"https://smart-data-models.github.io/data-models/specs/Parking/OffStreetParking/schema.json\",\n\t\t\t\"OnStreetParking\": \"https://smart-data-models.github.io/data-models/specs/Parking/OnStreetParking/schema.json\",\n\t\t\t\"Open311ServiceRequest\": \"https://smart-data-models.github.io/data-models/specs/IssueTracking/Open311_ServiceRequest/schema.json\",\n\t\t\t\"Open311ServiceType\": \"https://smart-data-models.github.io/data-models/specs/IssueTracking/Open311_ServiceType/schema.json\",\n\t\t\t\"ParkingAccess\": \"https://smart-data-models.github.io/data-models/specs/Parking/ParkingAccess/schema.json\",\n\t\t\t\"ParkingGroup\": \"https://smart-data-models.github.io/data-models/specs/Parking/ParkingGroup/schema.json\",\n\t\t\t\"ParkingSpot\": \"https://smart-data-models.github.io/data-models/specs/Parking/ParkingSpot/schema.json\",\n\t\t\t\"PointOfInterest\": \"https://smart-data-models.github.io/data-models/specs/PointOfInterest/PointOfInterest/schema.json\",\n\t\t\t\"Road\": \"https://smart-data-models.github.io/data-models/specs/Transportation/Road/schema.json\",\n\t\t\t\"RoadSegment\": \"https://smart-data-models.github.io/data-models/specs/Transportation/RoadSegment/schema.json\",\n\t\t\t\"SmartPointOfInteraction\": \"https://smart-data-models.github.io/data-models/specs/PointOfInteraction/SmartPointOfInteraction/schema.json\",\n\t\t\t\"SmartSpot\": \"https://smart-data-models.github.io/data-models/specs/PointOfInteraction/SmartSpot/schema.json\",\n\t\t\t\"Streetlight\": \"https://smart-data-models.github.io/data-models/specs/StreetLighting/Streetlight/schema.json\",\n\t\t\t\"StreetlightControlCabinet\": \"https://smart-data-models.github.io/data-models/specs/StreetLighting/StreetlightControlCabinet/schema.json\",\n\t\t\t\"StreetlightGroup\": \"https://smart-data-models.github.io/data-models/specs/StreetLighting/StreetlightGroup/schema.json\",\n\t\t\t\"StreetlightModel\": \"https://smart-data-models.github.io/data-models/specs/StreetLighting/StreetlightModel/schema.json\",\n\t\t\t\"ThreePhaseAcMeasurement\": \"https://smart-data-models.github.io/data-models/specs/Energy/ThreePhaseAcMeasurement/schema.json\",\n\t\t\t\"TrafficFlowObserved\": \"https://smart-data-models.github.io/data-models/specs/Transportation/TrafficFlowObserved/schema.json\",\n\t\t\t\"UserActivity\": \"https://smart-data-models.github.io/data-models/specs/User/Activity/schema.json\",\n\t\t\t\"UserContext\": \"https://smart-data-models.github.io/data-models/specs/User/UserContext/schema.json\",\n\t\t\t\"Vehicle\": \"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json\",\n\t\t\t\"VehicleModel\": \"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/VehicleModel/schema.json\",\n\t\t\t\"WasteContainer\": \"https://smart-data-models.github.io/data-models/specs/WasteManagement/WasteContainer/schema.json\",\n\t\t\t\"WasteContainerIsle\": \"https://smart-data-models.github.io/data-models/specs/WasteManagement/WasteContainerIsle/schema.json\",\n\t\t\t\"WasteContainerModel\": \"https://smart-data-models.github.io/data-models/specs/WasteManagement/WasteContainerModel/schema.json\",\n\t\t\t\"WaterQualityObserved\": \"https://smart-data-models.github.io/data-models/specs/Environment/WaterQualityObserved/schema.json\",\n\t\t\t\"WeatherForecast\": \"https://smart-data-models.github.io/data-models/specs/Weather/WeatherForecast/schema.json\",\n\t\t\t\"WeatherObserved\": \"https://smart-data-models.github.io/data-models/specs/Weather/WeatherObserved/schema.json\",\n\t\t\t\"\": \"\"\n\t\t}\n\t}\n]",
+        "output": "str",
+        "x": 1590,
+        "y": 700,
+        "wires": [
+            [
+                "d222ec97.269898"
+            ]
+        ]
+    },
+    {
+        "id": "24f6fab7.2318f6",
+        "type": "template",
+        "z": "51af8c53.929c6c",
+        "name": "smart-data-transforms.json",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "json",
+        "syntax": "plain",
+        "template": "[\n\t{\n\t\t\"query\": \"type='BasicVehicle' and latitude\",\n\t\t\"cases\": {\n\t\t\t\"true\": \"http://localhost:1880/schemas/OldVehicleToVehicle.jsonata.js\"\n\t\t}\n\t}\n]\n",
+        "output": "str",
+        "x": 1600,
+        "y": 740,
+        "wires": [
+            [
+                "d222ec97.269898"
+            ]
+        ]
+    },
+    {
+        "id": "55807652.b2dd38",
+        "type": "switch",
+        "z": "51af8c53.929c6c",
+        "name": "",
+        "property": "req.params.schema",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "smart-data-models.json",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "smart-data-transforms.json",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "OldVehicleToVehicle.jsonata.js",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 4,
+        "x": 1370,
+        "y": 740,
+        "wires": [
+            [
+                "eb83d168.8f37b8"
+            ],
+            [
+                "24f6fab7.2318f6"
+            ],
+            [
+                "41126013.dac2d"
+            ],
+            [
+                "81cb0a38.5a15d8"
+            ]
+        ]
+    },
+    {
+        "id": "81cb0a38.5a15d8",
+        "type": "http response",
+        "z": "51af8c53.929c6c",
+        "name": "",
+        "statusCode": "404",
+        "headers": {},
+        "x": 1540,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "41126013.dac2d",
+        "type": "template",
+        "z": "51af8c53.929c6c",
+        "name": "OldVehicleToVehicle.jsonata.js",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "text",
+        "syntax": "plain",
+        "template": "{\n\t\"id\": id,\n\t\"type\": \"Vehicle\",\n\t\"vehicleType\": vehicleType,\n\t\"category\": [\n\t\tcategory1\n\t],\n\t\"location\": {\n\t\t\"type\": \"Point\",\n\t\t\"coordinates\": [\n\t\t\tlongitude,\n\t\t\tlatitude\n\t\t]\n\t},\n\t\"name\": name,\n\t\"speed\": speed,\n\t\"cargoWeight\": cargoWeight,\n\t\"serviceStatus\": serviceStatus,\n\t\"serviceProvided\": [\n\t\tserviceProvided1,\n\t\tserviceProvided2\n\t],\n\t\"areaServed\": areaServed,\n\t\"refVehicleModel\": refVehicleModel,\n\t\"vehiclePlateIdentifier\": vehiclePlateIdentifier\n}\n",
+        "output": "str",
+        "x": 1610,
+        "y": 780,
+        "wires": [
+            [
+                "30dff466.fd0104"
+            ]
+        ]
+    },
+    {
+        "id": "30dff466.fd0104",
+        "type": "http response",
+        "z": "51af8c53.929c6c",
+        "name": "JSONata response",
+        "statusCode": "",
+        "headers": {
+            "content-type": "text/plain"
+        },
+        "x": 1870,
+        "y": 780,
+        "wires": []
+    }
+]

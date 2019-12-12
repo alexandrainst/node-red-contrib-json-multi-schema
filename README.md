@@ -15,7 +15,7 @@ License: [MIT](LICENSE.md), 2019
 
 Requirements: Any platform where [Node-RED](https://nodered.org) (1.0+) or [Node.js](https://nodejs.org) (10.0+) can run.
 
-Here is an example of full Node-RED: [Node-RED_example_of_flow.json](examples/Node-RED_example_of_flow.json)
+Here is an example of full Node-RED flow: [Node-RED_example_of_flow.json](examples/Node-RED_example_of_flow.json)
 
 ![Node-RED flow](examples/Node-RED_example_of_flow.png)
 
@@ -363,3 +363,33 @@ docker run -i -v tmp-schemas:/tmp --rm synchronicityiot/node-red-contrib-json-mu
 docker run -i -v tmp-schemas:/tmp --rm synchronicityiot/node-red-contrib-json-multi-schema json-multi-schema-validator | \
 jq -c .
 ```
+
+ 
+
+---
+
+ 
+
+## Serving schemas
+
+The three nodes are all expecting configuration files and corresponding schemas to be provided by HTTP.
+
+While JSON Schemas are often publicly available (e.g. https://schema.org , https://smart-data-models.github.io/data-models/ ), it might not be the case for the list of JSON Schemas itself, the list of transformations, or the JSONata transformations.
+
+Any HTTP server can be used to host those documents. This can also be done using Node-RED:
+
+### Local Node-RED hosting
+
+The same Node-RED instance can be used to host the various lists and custom schemas.
+
+Here is an example of full Node-RED flow: [Node-RED_example_of_HTTP_flow.json](examples/Node-RED_example_of_HTTP_flow.json)
+
+![Node-RED flow](examples/Node-RED_example_of_HTTP_flow.png)
+
+Read more on the [Node-RED cookbook](https://cookbook.nodered.org/http/serve-json-content).
+
+### Caching of schemas
+
+Once downloaded, a copy of the schemas is saved on local disk (by default in `/tmp/`).
+
+If schemas are updated without changing their URL, it is possible to either purge the local cache manually, or add a version number at the end of their URL, such as `https://example.net/a-schema.json?v2`
