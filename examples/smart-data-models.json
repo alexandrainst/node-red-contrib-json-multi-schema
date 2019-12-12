@@ -10,7 +10,7 @@
 		"description": "JSON Schemas for NGSI v2 models (not LD) in 'Normalized NGSI response' representation from https://fiware.github.io/data-models/ (https://github.com/FIWARE/data-models) and https://smart-data-models.github.io/data-models/ (https://github.com/smart-data-models/data-models)",
 		"query": "$not(`@context`) and *.value ? type : false",
 		"cases": {
-			"Alert", "https://smart-data-models.github.io/data-models/specs/Alert/alert-schema.json",
+			"Alert": "https://smart-data-models.github.io/data-models/specs/Alert/alert-schema.json",
 			"": ""
 		}
 	},
