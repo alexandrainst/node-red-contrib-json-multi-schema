@@ -1,22 +1,15 @@
 [
 	{
-		"description": "JSON Schemas for NGSI v2 models in their LD representation from https://fiware.github.io/data-models/ (https://github.com/FIWARE/data-models) and https://smart-data-models.github.io/data-models/ (https://github.com/smart-data-models/data-models)",
-		"query": "`@context` ? type : false",
-		"cases": {
-			"": ""
-		}
-	},
-	{
-		"description": "JSON Schemas for NGSI v2 models (not LD) in 'Normalized NGSI response' representation from https://fiware.github.io/data-models/ (https://github.com/FIWARE/data-models) and https://smart-data-models.github.io/data-models/ (https://github.com/smart-data-models/data-models)",
-		"query": "$not(`@context`) and *.value ? type : false",
+		"description": "JSON Schemas for NGSI v2 models in 'Normalized NGSI response representation' (JSON-LD or not) from https://smart-data-models.github.io/data-models/ (https://github.com/smart-data-models/data-models)",
+		"query": "*.value ? type : false",
 		"cases": {
 			"Alert": "https://smart-data-models.github.io/data-models/specs/Alert/alert-schema.json",
 			"": ""
 		}
 	},
 	{
-		"description": "JSON Schemas for NGSI v2 models (not LD) in 'Simplified representation' from https://fiware.github.io/data-models/ (https://github.com/FIWARE/data-models) and https://smart-data-models.github.io/data-models/ (https://github.com/smart-data-models/data-models)",
-		"query": "$not(`@context`) and $not(*.value) ? type : false",
+		"description": "JSON Schemas for NGSI v2 models in 'Simplified representation' from https://fiware.github.io/data-models/ (https://github.com/FIWARE/data-models) and https://smart-data-models.github.io/data-models/ (https://github.com/smart-data-models/data-models)",
+		"query": "$not(*.value) ? type : false",
 		"cases": {
 			"AeroAllergenObserved": "https://smart-data-models.github.io/data-models/specs/Environment/AeroAllergenObserved/schema.json",
 			"AgriApp": "https://fiware.github.io/data-models/specs/AgriFood/AgriApp/schema.json",
