@@ -24,6 +24,8 @@
 <script type="text/x-red" data-help-name="json-multi-schema-validator">
 	<ul>
 		<li>The node will validate the JSON data given in <code>msg.payload</code> against the JSON Schema URL given in <code>msg.schemaUrl</code></li>
+		<li>The URL of the corresponding JSON Schema file is returned in <code>msg.validUrl</code>.</li>
+		<li>The content of <code>msg.payload</code> is unchanged.</li>
 		<li>Errors are returned on <code>msg.error</code></li>
 	</ul>
 </script>

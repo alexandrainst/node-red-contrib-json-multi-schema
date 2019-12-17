@@ -21,7 +21,7 @@ module.exports = RED => {
 		const jsonCache = require('./json-cache.js')(node);
 
 		/**
-		 * Find the URL to the JSON Schema to use for the given payload.
+		 * Find the URL to the JSON Schema or JSONata expression to use for the given payload.
 		 */
 		async function resolveAsync(payload) {
 			const mappings = await jsonCache.loadAsync(mappingsUrl);

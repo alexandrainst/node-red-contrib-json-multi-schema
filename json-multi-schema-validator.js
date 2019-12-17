@@ -1,9 +1,12 @@
 /* jshint esversion:8, node:true, strict:true */
 /**
- * Node-RED node that can validate a JSON payload against a specified JSON Schema URL.
- * JSON Schemas are automatically downloaded and cached the first time they are needed.
+ * Node-RED node that validates a JSON payload against a specified JSON Schema URL.
+ * JSON Schemas are automatically downloaded and cached on disk the first time they are needed.
+ * JSON Schema validators are cached in memory.
  */
 
+//Ajv: Another JSON Schema Validator
+const Ajv = require('ajv');
 const util = require('util');
 
 module.exports = RED => {
@@ -18,8 +21,6 @@ module.exports = RED => {
 
 		const jsonCache = require('./json-cache.js')(node);
 
-		//Ajv: Another JSON Schema Validator
-		const Ajv = require('ajv');
 		const ajv = Ajv({
 			allErrors: true,	//TODO: Make a parameter
 			loadSchema: jsonCache.loadAsync,
@@ -29,9 +30,12 @@ module.exports = RED => {
 		//Cache of validators for different schemas
 		const validators = {};
 
-		async function validateAsync(schemaUrl, payload) {
+		/**
+		 * Validate the given payload with the JSON Schema given in URL.
+		 */
+		async function validateAsync(payload, schemaUrl) {
 			if (!schemaUrl) {
-				return 'Error: Invalid schema URL';
+				return 'Error: Invalid JSON schema URL';
 			}
 
 			let validatorCache = validators[schemaUrl];
@@ -62,7 +66,7 @@ module.exports = RED => {
 					const validator = await ajv.compileAsync({"$ref":schemaUrl});
 					if (validator) {
 						validatorCache.validator = validator;
-						task = validateAsync(schemaUrl, payload);
+						task = validateAsync(payload, schemaUrl);
 					} else {
 						validatorCache.validator = false;
 						node.error('Unknown error compiling schema: ' + schemaUrl);
@@ -89,8 +93,9 @@ module.exports = RED => {
 			if (msg.schemaUrl == '') {
 				msg.error += 'Unknown schema!';
 			} else {
+				msg.validUrl = msg.schemaUrl;
 				try {
-					const result = await validateAsync(msg.schemaUrl, msg.payload);
+					const result = await validateAsync(msg.payload, msg.schemaUrl);
 					if (result === true) {
 						msg.error = msg.error != '';
 					} else {
@@ -103,9 +108,10 @@ module.exports = RED => {
 				} catch (ex) {
 					lastStatusError = true;
 					node.status({ fill:'red', shape:'ring', text:'Error', });
-					msg.error += util.format('Failed validatation against "%s": %s', msg.schemaUrl, ex);
+					msg.error += util.format('Error validatating using "%s": %s', msg.schemaUrl, ex);
 				}
 			}
+			delete msg.schemaUrl;
 			node.send(msg);
 		});
 	}

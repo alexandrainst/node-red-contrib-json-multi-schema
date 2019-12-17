@@ -25,125 +25,10 @@ Here is an example of full Node-RED flow: [Node-RED_example_of_flow.json](exampl
 
  
 
-## node-red-contrib-json-multi-schema-transformer
-* *Context*: Node-RED node, or command line with `index.js multi-schema-transformer --transformsUrl='"https://..."'`
-* *Purpose*: Ability to transform a JSON observation on the fly from whichever format to another format (e.g. one of the FIWARE NGSI types) using a specified JSONata URL. Schemas are automatically downloaded and cached the first time they are needed.
-* *Configuration*: A Node-RED `transformsUrl` property to indicate the URL of a file listing which JSONata file to use for which data input. (See example below).
-* *Input*: A JSON observation in whichever format in the `msg.payload` property.
-* *Output*: The transformed JSON observation in the `msg.payload` property.
-
-### Example of input data
-
-This is an example of non-standard payload, which needs to be transformed into a standard format.
-
-We represent the example as a full Node-RED message, i.e. wrapped into a `{"payload":...}` structure (cf. `jq` version further down).
-
-```json
-{
-	"payload": {
-		"id": "vehicle:WasteManagement:1",
-		"type": "BasicVehicle",
-		"vehicleType": "lorry",
-		"category1": "municipalServices",
-		"latitude": -3.164485591715449,
-		"longitude": 40.62785133667262,
-		"name": "C Recogida 1",
-		"speed": 50,
-		"cargoWeight": 314,
-		"serviceStatus": "onRoute",
-		"serviceProvided1": "garbageCollection",
-		"serviceProvided2": "wasteContainerCleaning",
-		"areaServed": "Centro",
-		"refVehicleModel": "vehiclemodel:econic",
-		"vehiclePlateIdentifier": "3456ABC"
-	}
-}
-```
-
-### Example of configuration file listing the transformations
-
-In the example, this JSON file is hosted at `https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json`
-
-`query` is a [JSONata expression](http://docs.jsonata.org/simple). In this example, it will match the input data above.
-
-```json
-[
-	{
-		"description": "Transformation from NGSI v2 models from 'Normalized response representation' (JSON-LD version partially supported) to 'Simplified representation'",
-		"query": "type and *.value",
-		"cases": {
-			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/NGSI-Normalised-to-keyValues.jsonata.js"
-		}
-	},
-	{
-		"description": "Transformation from Cesva-TA120 to NGSI v2 NoiseLevelObserved in Simplified representation",
-		"query": "type='Cesva-TA120' and NoiseLevelObserved",
-		"cases": {
-			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"
-		}
-	}
-]
-```
-
-### Example of JSONata transformation
-
-In the example, this JSONata file is hosted at [`Cesva-TA120-to-NoiseLevelObserved.jsonata.js`](https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js).
-
-```js
-{
-	"id": NoiseLevelObserved.id,
-	"type": NoiseLevelObserved.type,
-	"LAeq": NoiseLevelObserved.LAeq,
-	"dateObservedFrom": NoiseLevelObserved.dateObserved,
-	"dateObservedTo": NoiseLevelObserved.dateObserved,
-	"location": NoiseLevelObserved.location
-}
-
-```
-
-A more advanced example of JSONata transformation can be found in [`NGSI-Normalised-to-keyValues.jsonata.js`](https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/NGSI-Normalised-to-keyValues.jsonata.js).
-
-### Example of transformation from command line
-The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
-
-```sh
-echo '{"payload":{"id":"TA120-T246177","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","sonometerClass":"1","location":{"coordinates":[24.985891,60.274286],"type":"Point"},"measurand":["LAeq | 48.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:09.000000Z","LAeq":48.6,"type":"NoiseLevelObserved"}}}' | \
-node ./index.js json-multi-schema-transformer --transformsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"' | jq .
-```
-
-Output:
-
-```json
-{
-	"payload": {
-		"id": "TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z",
-		"type": "NoiseLevelObserved",
-		"LAeq": 48.6,
-		"dateObservedFrom": "2018-09-17T07:01:09.000000Z",
-		"dateObservedTo": "2018-09-17T07:01:09.000000Z",
-		"location": {
-			"coordinates": [
-				24.985891,
-				60.274286
-			],
-			"type": "Point"
-		}
-	},
-	"error": false,
-	"transformUrl": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"
-}
-```
-
- 
-
----
-
- 
-
 ## node-red-contrib-json-multi-schema-resolver
 * *Context*: Node-RED node, or command line with `./index.js json-multi-schema-resolver --mappingsUrl='"https://..."'`
-* *Purpose*: Ability to determine the URL of the JSON Schema (e.g. FIWARE NGSI) to use for a given JSON payload received.
-* *Configuration*: A Node-RED `mappingsUrl` property to indicate the URL of a file listing which JSON Schema to use for which data input. (See example below).
+* *Purpose*: Ability to determine the URL of the JSON Schema (e.g. FIWARE NGSI) or JSONata expression to use for a given JSON payload received.
+* *Configuration*: A Node-RED `mappingsUrl` property to indicate the URL of a file listing which JSON Schema or JSONata expression to use for which data input. (See examples below).
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property.
 * *Output*: The unmodified JSON observation in the `msg.payload` property, and the resolved schema URL in the `msg.schemaUrl` property.
 
@@ -177,7 +62,7 @@ We represent the example as a full Node-RED message, i.e. wrapped into a `{"payl
 
 ### Example of configuration file listing the JSON schemas
 
-In the example, this JSON file is hosted at `https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json`
+In the example, this JSON file is hosted at [`examples/smart-data-models.json`](https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json)
 
 `query` is a [JSONata expression](http://docs.jsonata.org/simple). In this example, it will match the input data above on `"type":"Vehicle"`
 
@@ -201,12 +86,39 @@ In the example, this JSON file is hosted at `https://raw.githubusercontent.com/a
 ]
 ```
 
+### Example of configuration file listing the JSONata transformations
+
+Same format than above.
+In the example, this JSON file is hosted at [`examples/smart-data-transforms.json`](https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json)
+
+`query` is a [JSONata expression](http://docs.jsonata.org/simple).
+
+```json
+[
+	{
+		"description": "Transformation from NGSI v2 models from 'Normalized response representation' to 'Simplified representation'",
+		"query": "type and *.value",
+		"cases": {
+			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/NGSI-Normalised-to-keyValues.jsonata.js"
+		}
+	},
+	{
+		"description": "Transformation from Cesva-TA120 to NGSI v2 NoiseLevelObserved in Simplified representation",
+		"query": "type='Cesva-TA120' and NoiseLevelObserved",
+		"cases": {
+			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"
+		}
+	}
+]
+```
+
 ### Example of schema resolution from command line
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 
 ```sh
 echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | \
-node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"' | jq .
+node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"' | \
+jq .
 ```
 
 Output:
@@ -250,46 +162,70 @@ Output:
 
  
 
-## node-red-contrib-json-multi-schema-validator
-* *Context*: Node-RED node, or command line with `./index.js json-multi-schema-validator`
-* *Purpose*: Ability to validate a JSON observation (e.g. one of the FIWARE NGSI types) on the fly against a specified JSON Schema URL. Schemas are automatically downloaded and cached the first time they are needed.
-* *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property, and the corresponding JSON Schema URL on the `msg.schemaUrl` property.
-* *Output*: The unmodified JSON observation in the `msg.payload` property, and potential validation errors in the `msg.error` property.
-* *Implementation*: Based on [AJV](https://ajv.js.org).
+## node-red-contrib-json-multi-schema-transformer
+* *Context*: Node-RED node, or command line with `index.js multi-schema-transformer`
+* *Purpose*: Ability to transform a JSON observation on the fly from whichever format to another format (e.g. one of the FIWARE NGSI types) using a specified JSONata URL. Schemas are automatically downloaded and cached the first time they are needed.
+* *Input*: A JSON observation in whichever format in the `msg.payload` property, and the corresponding JSONata URL on the `msg.schemaUrl` property (coming from json-multi-schema-resolver).
+* *Output*: The transformed JSON observation in the `msg.payload` property, and potential validation errors in the `msg.error` property.
+* *Implementation*: Based on [JSONata](https://github.com/jsonata-js/jsonata).
+
+It is typically used with a *json-multi-schema-resolver* node in front.
 
 ### Example of input data
-This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Transportation/Vehicle/Vehicle/doc/spec/index.html), which we want to validate against its [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/VehicleModel/schema.json), which address is provided by the Node-RED property `msg.schemaUrl`.
+
+This is an example of proprietary format, which we would like to be transformed into another format (a standard NGSI one).
+
+We represent the example as a full Node-RED message, i.e. wrapped into a `{"payload":...}` structure.
 
 ```json
 {
-	"payload": {
-		"id": "vehicle:WasteManagement:1",
-		"type": "Vehicle",
-		"vehicleType": "lorry",
-		"category": ["municipalServices"],
+	"id": "TA120-T246177",
+	"type": "Cesva-TA120",
+	"NoiseLevelObserved": {
+		"id": "TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z",
+		"sonometerClass": "1",
 		"location": {
-			"type": "Point",
-			"coordinates": [40.62785133667262, -3.164485591715449]
+			"coordinates": [
+				24.985891,
+				60.274286
+			],
+			"type": "Point"
 		},
-		"name": "C Recogida 1",
-		"speed": 50,
-		"cargoWeight": 314,
-		"serviceStatus": "onRoute",
-		"serviceProvided": ["garbageCollection", "wasteContainerCleaning"],
-		"areaServed": "Centro",
-		"refVehicleModel": "vehiclemodel:econic",
-		"vehiclePlateIdentifier": "3456ABC"
-	},
-	"schemaUrl": "https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"
+		"measurand": [
+			"LAeq | 48.6 | A-weighted, equivalent, sound level"
+		],
+		"dateObserved": "2018-09-17T07:01:09.000000Z",
+		"LAeq": 48.6,
+		"type": "NoiseLevelObserved"
+	}
 }
 ```
 
-### Example of JSON Schema validation from command line
+### Example of JSONata transformation
+
+In the example, this JSONata file is hosted at [`Cesva-TA120-to-NoiseLevelObserved.jsonata.js`](https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js).
+
+```js
+{
+	"id": NoiseLevelObserved.id,
+	"type": NoiseLevelObserved.type,
+	"LAeq": NoiseLevelObserved.LAeq,
+	"dateObservedFrom": NoiseLevelObserved.dateObserved,
+	"dateObservedTo": NoiseLevelObserved.dateObserved,
+	"location": NoiseLevelObserved.location
+}
+
+```
+
+A more advanced example of JSONata transformation can be found in [`NGSI-Normalised-to-keyValues.jsonata.js`](https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/NGSI-Normalised-to-keyValues.jsonata.js).
+
+### Example of transformation from command line
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"}' | \
-node ./index.js json-multi-schema-validator | jq .
+echo '{"payload":{"id":"TA120-T246177","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","sonometerClass":"1","location":{"coordinates":[24.985891,60.274286],"type":"Point"},"measurand":["LAeq | 48.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:09.000000Z","LAeq":48.6,"type":"NoiseLevelObserved"}},"error":false,"schemaUrl":"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"}' | \
+node ./index.js json-multi-schema-transformer | \
+jq .
 ```
 
 Output:
@@ -297,33 +233,91 @@ Output:
 ```json
 {
 	"payload": {
-		"id": "vehicle:WasteManagement:1",
-		"type": "Vehicle",
-		"vehicleType": "lorry",
-		"category": [
-			"municipalServices"
-		],
+		"id": "TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z",
+		"type": "NoiseLevelObserved",
+		"LAeq": 48.6,
+		"dateObservedFrom": "2018-09-17T07:01:09.000000Z",
+		"dateObservedTo": "2018-09-17T07:01:09.000000Z",
 		"location": {
-			"type": "Point",
 			"coordinates": [
-				40.62785133667262,
-				-3.164485591715449
-			]
-		},
-		"name": "C Recogida 1",
-		"speed": 50,
-		"cargoWeight": 314,
-		"serviceStatus": "onRoute",
-		"serviceProvided": [
-			"garbageCollection",
-			"wasteContainerCleaning"
-		],
-		"areaServed": "Centro",
-		"refVehicleModel": "vehiclemodel:econic",
-		"vehiclePlateIdentifier": "3456ABC"
+				24.985891,
+				60.274286
+			],
+			"type": "Point"
+		}
 	},
-	"schemaUrl": "https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json",
-	"error": false
+	"error": false,
+	"transformUrl": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"
+}
+```
+
+ 
+
+---
+
+ 
+
+## node-red-contrib-json-multi-schema-validator
+* *Context*: Node-RED node, or command line with `./index.js json-multi-schema-validator`
+* *Purpose*: Ability to validate a JSON observation (e.g. one of the FIWARE NGSI types) on the fly against a specified JSON Schema URL. Schemas are automatically downloaded and cached the first time they are needed.
+* *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property, and the corresponding JSON Schema URL on the `msg.schemaUrl` property (coming from json-multi-schema-resolver).
+* *Output*: The unmodified JSON observation in the `msg.payload` property, and potential validation errors in the `msg.error` property.
+* *Implementation*: Based on [AJV](https://ajv.js.org).
+
+It is typically used with a *json-multi-schema-resolver* node in front.
+
+### Example of input data
+This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Transportation/Vehicle/Vehicle/doc/spec/index.html), which we want to validate against its [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/VehicleModel/schema.json), which address is provided by the Node-RED property `msg.schemaUrl`.
+
+```json
+{
+	"payload": {
+		"id": "TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z",
+		"type": "NoiseLevelObserved",
+		"LAeq": 48.6,
+		"dateObservedFrom": "2018-09-17T07:01:09.000000Z",
+		"dateObservedTo": "2018-09-17T07:01:09.000000Z",
+		"location": {
+			"coordinates": [
+				24.985891,
+				60.274286
+			],
+			"type": "Point"
+		}
+	},
+	"schemaUrl": "https://smart-data-models.github.io/data-models/specs/Environment/NoiseLevelObserved/schema.json"
+}
+```
+
+### Example of JSON Schema validation from command line
+The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
+
+```sh
+echo '{"payload":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","type":"NoiseLevelObserved","LAeq":48.6,"dateObservedFrom":"2018-09-17T07:01:09.000000Z","dateObservedTo":"2018-09-17T07:01:09.000000Z","location":{"coordinates":[24.985891,60.274286],"type":"Point"}},"error":false,"transformUrl":"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js","schemaUrl":"https://smart-data-models.github.io/data-models/specs/Environment/NoiseLevelObserved/schema.json"}' | \
+node ./index.js json-multi-schema-validator | \
+jq .
+```
+
+Output:
+
+```json
+{
+	"payload": {
+		"id": "TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z",
+		"type": "NoiseLevelObserved",
+		"LAeq": 48.6,
+		"dateObservedFrom": "2018-09-17T07:01:09.000000Z",
+		"dateObservedTo": "2018-09-17T07:01:09.000000Z",
+		"location": {
+			"coordinates": [
+				24.985891,
+				60.274286
+			],
+			"type": "Point"
+		}
+	},
+	"error": false,
+	"validUrl": "https://smart-data-models.github.io/data-models/specs/Environment/NoiseLevelObserved/schema.json"
 }
 ```
 
@@ -342,10 +336,12 @@ Cf. screenshot at the top of this document.
 
 ### Piping on command line
 ```sh
-echo '{"payload":{"id":"TA120-T246177","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","sonometerClass":"1","location":{"coordinates":[24.985891,60.274286],"type":"Point"},"measurand":["LAeq | 48.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:09.000000Z","LAeq":48.6,"type":"NoiseLevelObserved"}}}' | \
-node ./index.js json-multi-schema-transformer --transformsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"' | \
+printf '{"payload":{"id":"TA120-T246177","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","sonometerClass":"1","location":{"coordinates":[24.985891,60.274286],"type":"Point"},"measurand":["LAeq | 48.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:09.000000Z","LAeq":48.6,"type":"NoiseLevelObserved"}}} \n {"payload":{"id":"TA120-T246183","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246183-NoiseLevelObserved-2018-09-17T07:01:15.000000Z","sonometerClass":"1","location":{"coordinates":[24.9030921,60.161804],"type":"Point"},"measurand":["LAeq | 37.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:15.000000Z","LAeq":37.6,"type":"NoiseLevelObserved"}}}' | \
+node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"' | \
+node ./index.js json-multi-schema-transformer | \
 node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"' | \
-node ./index.js json-multi-schema-validator | jq .
+node ./index.js json-multi-schema-validator | \
+jq .
 ```
 
 _Note_: This is the example used for `npm test`
@@ -359,12 +355,13 @@ For instance if the input is a list of observations wrapped into a JSON array:
 jq -c '.[] | {"payload":.}'
 ```
 
-Example from an URL:
+Example from an URL, doing a transformation followed by a validation:
 
 ```sh
 curl 'https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?limit=10' | \
 jq -c '.[] | {"payload":.}' | \
-node ./index.js json-multi-schema-transformer --transformsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"' | \
+node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"' | \
+node ./index.js json-multi-schema-transformer | \
 node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"' | \
 node ./index.js json-multi-schema-validator | \
 jq -c .
@@ -380,6 +377,7 @@ jq -c .
 
 A disk copy of the downloaded JSON and JSONata documents is kept in cache on disk.
 By default, the cache path is `/tmp/` but that can be changed with the environment variable `SCHEMAS_CACHE_PATH`
+Cached files have a `*.tmp.js` suffix.
 
  
 
@@ -410,18 +408,14 @@ docker volume create tmp-schemas
 docker run -v tmp-schemas:/tmp --rm synchronicityiot/node-red-contrib-json-multi-schema [name-of-node] --parameter='...'
 ```
 
-Example for a validation (same principle for transforming and resolving):
-
-```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"}' | \
-docker run -i -v tmp-schemas:/tmp --rm synchronicityiot/node-red-contrib-json-multi-schema json-multi-schema-validator
-```
 
 Example for resolving and validating from a network HTTP request:
 
 ```sh
-curl 'https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?limit=10&options=keyValues' | \
+curl 'https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?limit=10' | \
 jq -c '.[] | {"payload":.}' | \
+docker run -i -v tmp-schemas:/tmp --rm synchronicityiot/node-red-contrib-json-multi-schema json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"' | \
+docker run -i -v tmp-schemas:/tmp --rm synchronicityiot/node-red-contrib-json-multi-schema json-multi-schema-transformer | \
 docker run -i -v tmp-schemas:/tmp --rm synchronicityiot/node-red-contrib-json-multi-schema json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"' | \
 docker run -i -v tmp-schemas:/tmp --rm synchronicityiot/node-red-contrib-json-multi-schema json-multi-schema-validator | \
 jq -c .

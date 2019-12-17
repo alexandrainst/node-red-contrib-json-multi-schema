@@ -4,7 +4,6 @@
 		color: '#00B4FF',
 		defaults: {
 			name: { value: '', },
-			transformsUrl: { value: '', },
 		},
 		inputs: 1,
 		outputs: 1,
@@ -20,18 +19,12 @@
 		<label for="node-input-name"><i class="icon-tag"></i> Name</label>
 		<input type="text" id="node-input-name" placeholder="Name" />
 	</div>
-
-	<div class="form-row">
-		<label for="node-input-transformsUrl"><i class="icon-tag"></i> Transforms URL</label>
-		<input type="text" id="node-input-transformsUrl" placeholder="transformsUrl" />
-	</div>
 </script>
 
 <script type="text/x-red" data-help-name="json-multi-schema-transformer">
 	<p>Node to transform a JSON observation to another format using a configurable set of JSONata rules.</p>
 	<ul>
-		<li>The node will transform a given JSON payload received in <code>msg.payload</code> using some JSONata rules.</li>
-		<li>To find the proper rules, the node uses the configuration file which URL is given as a <code>transformsUrl</code> property.</li>
+		<li>The node will transform a given JSON payload received in <code>msg.payload</code> using some JSONata rules, which URL is given in <code>msg.schemaUrl</code></li>
 		<li>The URL of the corresponding JSONata file is returned in <code>msg.transformUrl</code>.</li>
 		<li>The transformed payload is returned in <code>msg.payload</code>.</li>
 		<li>Errors are returned on <code>msg.error</code></li>
