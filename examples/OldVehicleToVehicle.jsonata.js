@@ -1,3 +1,6 @@
+/**
+ * Legacy example of JSONata transformation.
+ */
 {
 	"id": id,
 	"type": "Vehicle",

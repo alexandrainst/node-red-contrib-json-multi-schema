@@ -69,15 +69,17 @@ In the example, this JSON file is hosted at `https://raw.githubusercontent.com/a
 ```json
 [
 	{
-		"query": "type='BasicVehicle' and latitude",
+		"description": "Transformation from NGSI v2 models from 'Normalized response representation' (JSON-LD version partially supported) to 'Simplified representation'",
+		"query": "type and *.value",
 		"cases": {
-			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/OldVehicleToVehicle.jsonata.js"
+			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/NGSI-Normalised-to-keyValues.jsonata.js"
 		}
 	},
 	{
-		"query": "type='WeatherObserved' and latitude and longitude",
+		"description": "Transformation from Cesva-TA120 to NGSI v2 NoiseLevelObserved in Simplified representation",
+		"query": "type='Cesva-TA120' and NoiseLevelObserved",
 		"cases": {
-			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/OldWeatherObservedToVehicle.jsonata.js"
+			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"
 		}
 	}
 ]
@@ -85,42 +87,27 @@ In the example, this JSON file is hosted at `https://raw.githubusercontent.com/a
 
 ### Example of JSONata transformation
 
-In the example, this JSONata file is hosted at `https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/OldVehicleToVehicle.jsonata.js`
+In the example, this JSONata file is hosted at [`Cesva-TA120-to-NoiseLevelObserved.jsonata.js`](https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js).
 
 ```js
 {
-	"id": id,
-	"type": "Vehicle",
-	"vehicleType": vehicleType,
-	"category": [
-		category1
-	],
-	"location": {
-		"type": "Point",
-		"coordinates": [
-			longitude,
-			latitude
-		]
-	},
-	"name": name,
-	"speed": speed,
-	"cargoWeight": cargoWeight,
-	"serviceStatus": serviceStatus,
-	"serviceProvided": [
-		serviceProvided1,
-		serviceProvided2
-	],
-	"areaServed": areaServed,
-	"refVehicleModel": refVehicleModel,
-	"vehiclePlateIdentifier": vehiclePlateIdentifier
+	"id": NoiseLevelObserved.id,
+	"type": NoiseLevelObserved.type,
+	"LAeq": NoiseLevelObserved.LAeq,
+	"dateObservedFrom": NoiseLevelObserved.dateObserved,
+	"dateObservedTo": NoiseLevelObserved.dateObserved,
+	"location": NoiseLevelObserved.location
 }
+
 ```
+
+A more advanced example of JSONata transformation can be found in [`NGSI-Normalised-to-keyValues.jsonata.js`](https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/NGSI-Normalised-to-keyValues.jsonata.js).
 
 ### Example of transformation from command line
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicleType":"lorry","category1":"municipalServices","latitude":-3.164485591715449,"longitude":40.62785133667262,"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided1":"garbageCollection","serviceProvided2":"wasteContainerCleaning","areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | \
+echo '{"payload":{"id":"TA120-T246177","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","sonometerClass":"1","location":{"coordinates":[24.985891,60.274286],"type":"Point"},"measurand":["LAeq | 48.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:09.000000Z","LAeq":48.6,"type":"NoiseLevelObserved"}}}' | \
 node ./index.js json-multi-schema-transformer --transformsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"'
 ```
 
