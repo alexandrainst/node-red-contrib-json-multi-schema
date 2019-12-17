@@ -54,7 +54,6 @@ module.exports = RED => {
 				if (schemaUrl != '') {
 					msg.schemaUrl = schemaUrl;
 				} else {
-					msg.payload = null;
 					msg.error = util.format('Failed resolving schema using "%s"', mappingsUrl);
 				}
 				if (lastStatusError) {
@@ -64,7 +63,6 @@ module.exports = RED => {
 			} catch (ex) {
 				lastStatusError = true;
 				node.status({ fill:'red', shape:'ring', text:'Error', });
-				msg.payload = null;
 				msg.error = util.format('Error resolving schema using "%s": %s', mappingsUrl, ex);
 			}
 			node.send(msg);

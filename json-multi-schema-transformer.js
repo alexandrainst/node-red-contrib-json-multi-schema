@@ -98,24 +98,19 @@ module.exports = RED => {
 					if (result) {
 						msg.payload = result;
 					} else {
-						msg.payload = null;
+						lastStatusError = true;
+						node.status({ fill:'red', shape:'ring', text:'Error', });
 						msg.error = util.format('Failed tranforming using "%s"', transformsUrl);
 					}
 					if (lastStatusError) {
 						node.status({ fill:'green', shape:'dot', text:'OK', });
 						lastStatusError = false;
 					}
-				} else {
-					lastStatusError = true;
-					node.status({ fill:'red', shape:'ring', text:'Error', });
-					msg.payload = null;
-					msg.error = util.format('Failed resolving tranforms using "%s"', transformsUrl);
 				}
 			} catch (ex) {
 				lastStatusError = true;
 				node.status({ fill:'red', shape:'ring', text:'Error', });
-				msg.payload = null;
-				msg.error = util.format('Error tranforming using "%s": %s', transformsUrl, ex);
+				msg.error = util.format('Error tranforming using "%s": %s : %s', transformsUrl, ex, JSON.stringify(msg.payload));
 			}
 			node.send(msg);
 		});

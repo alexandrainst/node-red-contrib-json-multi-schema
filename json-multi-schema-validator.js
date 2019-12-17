@@ -86,23 +86,25 @@ module.exports = RED => {
 
 		node.on('input', async msg => {
 			delete msg.error;
-			try {
-				const result = await validateAsync(msg.schemaUrl, msg.payload);
-				if (result === true) {
-					msg.error = false;
-				} else {
-					msg.payload = null;
-					msg.error = util.format('Failed validatation against "%s": %s', msg.schemaUrl, result);
+			if (msg.schemaUrl == '') {
+				msg.error = 'Unknown schema!';
+			} else {
+				try {
+					const result = await validateAsync(msg.schemaUrl, msg.payload);
+					if (result === true) {
+						msg.error = false;
+					} else {
+						msg.error = util.format('Failed validatation against "%s": %s', msg.schemaUrl, result);
+					}
+					if (lastStatusError) {
+						node.status({ fill:'green', shape:'dot', text:'OK', });
+						lastStatusError = false;
+					}
+				} catch (ex) {
+					lastStatusError = true;
+					node.status({ fill:'red', shape:'ring', text:'Error', });
+					msg.error = util.format('Failed validatation against "%s": %s', msg.schemaUrl, ex);
 				}
-				if (lastStatusError) {
-					node.status({ fill:'green', shape:'dot', text:'OK', });
-					lastStatusError = false;
-				}
-			} catch (ex) {
-				lastStatusError = true;
-				node.status({ fill:'red', shape:'ring', text:'Error', });
-				msg.payload = null;
-				msg.error = util.format('Failed validatation against "%s": %s', msg.schemaUrl, ex);
 			}
 			node.send(msg);
 		});
