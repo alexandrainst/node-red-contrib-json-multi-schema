@@ -48,12 +48,11 @@ module.exports = RED => {
 
 		node.on('input', async msg => {
 			delete msg.schemaUrl;
-			msg.error = msg.error ? msg.error + ' ; ' : '';
 			try {
 				const schemaUrl = await resolveAsync(msg.payload);
 				if (schemaUrl != '') {
 					msg.schemaUrl = schemaUrl;
-					msg.error = msg.error != '';
+					msg.error = msg.error ? msg.error : false;
 				}
 				if (lastStatusError) {
 					node.status({ fill:'green', shape:'dot', text:'OK', });
@@ -62,6 +61,7 @@ module.exports = RED => {
 			} catch (ex) {
 				lastStatusError = true;
 				node.status({ fill:'red', shape:'ring', text:'Error', });
+				msg.error = msg.error ? msg.error + ' ; ' : '';
 				msg.error += util.format('Error resolving schema using "%s": %s', mappingsUrl, ex);
 			}
 			node.send(msg);

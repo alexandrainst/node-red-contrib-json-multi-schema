@@ -34,10 +34,6 @@ module.exports = RED => {
 		 * Validate the given payload with the JSON Schema given in URL.
 		 */
 		async function validateAsync(payload, schemaUrl) {
-			if (!schemaUrl) {
-				return 'Error: Invalid JSON schema URL';
-			}
-
 			let validatorCache = validators[schemaUrl];
 			if (validatorCache) {
 				if (validatorCache.validator === null) {
@@ -90,7 +86,7 @@ module.exports = RED => {
 
 		node.on('input', async msg => {
 			msg.error = msg.error ? msg.error + ' ; ' : '';
-			if (msg.schemaUrl != '') {
+			if (msg.schemaUrl) {
 				msg.validUrl = msg.schemaUrl;
 				try {
 					const result = await validateAsync(msg.payload, msg.schemaUrl);

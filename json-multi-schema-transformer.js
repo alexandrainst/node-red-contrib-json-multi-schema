@@ -28,10 +28,6 @@ module.exports = RED => {
 		 * Transform the given payload with the JSONata expression given in URL.
 		 */
 		async function transformAsync(payload, transformUrl) {
-			if (!transformUrl) {
-				return 'Error: Invalid JSONata URL';
-			}
-
 			let jsonataExpression;
 			let jsonataCache = jsonatas[transformUrl];
 			if (jsonataCache) {
@@ -66,7 +62,7 @@ module.exports = RED => {
 
 		node.on('input', async msg => {
 			msg.error = msg.error ? msg.error + ' ; ' : '';
-			if (msg.schemaUrl != '') {
+			if (msg.schemaUrl) {
 				msg.transformUrl = msg.schemaUrl;
 				try {
 					const result = await transformAsync(msg.payload, msg.schemaUrl);
@@ -83,6 +79,7 @@ module.exports = RED => {
 				} catch (ex) {
 					lastStatusError = true;
 					node.status({ fill:'red', shape:'ring', text:'Error', });
+					console.error('Schema2 ' + msg.schemaUrl);
 					msg.error += util.format('Error tranforming using "%s": %s', msg.schemaUrl, ex);
 				}
 			}
