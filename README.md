@@ -108,13 +108,30 @@ The JSON input messages must each be on one single line, and wrapped into a Node
 
 ```sh
 echo '{"payload":{"id":"TA120-T246177","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","sonometerClass":"1","location":{"coordinates":[24.985891,60.274286],"type":"Point"},"measurand":["LAeq | 48.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:09.000000Z","LAeq":48.6,"type":"NoiseLevelObserved"}}}' | \
-node ./index.js json-multi-schema-transformer --transformsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"'
+node ./index.js json-multi-schema-transformer --transformsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"' | jq .
 ```
 
 Output:
 
 ```json
-{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"transformUrl":"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/OldVehicleToVehicle.jsonata.js"}
+{
+	"payload": {
+		"id": "TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z",
+		"type": "NoiseLevelObserved",
+		"LAeq": 48.6,
+		"dateObservedFrom": "2018-09-17T07:01:09.000000Z",
+		"dateObservedTo": "2018-09-17T07:01:09.000000Z",
+		"location": {
+			"coordinates": [
+				24.985891,
+				60.274286
+			],
+			"type": "Point"
+		}
+	},
+	"error": false,
+	"transformUrl": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"
+}
 ```
 
  
@@ -189,13 +206,42 @@ The JSON input messages must each be on one single line, and wrapped into a Node
 
 ```sh
 echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | \
-node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"'
+node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"' | jq .
 ```
 
 Output:
 
 ```json
-{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"}
+{
+	"payload": {
+		"id": "vehicle:WasteManagement:1",
+		"type": "Vehicle",
+		"vehicleType": "lorry",
+		"category": [
+			"municipalServices"
+		],
+		"location": {
+			"type": "Point",
+			"coordinates": [
+				40.62785133667262,
+				-3.164485591715449
+			]
+		},
+		"name": "C Recogida 1",
+		"speed": 50,
+		"cargoWeight": 314,
+		"serviceStatus": "onRoute",
+		"serviceProvided": [
+			"garbageCollection",
+			"wasteContainerCleaning"
+		],
+		"areaServed": "Centro",
+		"refVehicleModel": "vehiclemodel:econic",
+		"vehiclePlateIdentifier": "3456ABC"
+	},
+	"error": false,
+	"schemaUrl": "https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"
+}
 ```
 
  
@@ -243,13 +289,42 @@ The JSON input messages must each be on one single line, and wrapped into a Node
 
 ```sh
 echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json"}' | \
-node ./index.js json-multi-schema-validator
+node ./index.js json-multi-schema-validator | jq .
 ```
 
 Output:
 
 ```json
-{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"},"schemaUrl":"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json","error":false}
+{
+	"payload": {
+		"id": "vehicle:WasteManagement:1",
+		"type": "Vehicle",
+		"vehicleType": "lorry",
+		"category": [
+			"municipalServices"
+		],
+		"location": {
+			"type": "Point",
+			"coordinates": [
+				40.62785133667262,
+				-3.164485591715449
+			]
+		},
+		"name": "C Recogida 1",
+		"speed": 50,
+		"cargoWeight": 314,
+		"serviceStatus": "onRoute",
+		"serviceProvided": [
+			"garbageCollection",
+			"wasteContainerCleaning"
+		],
+		"areaServed": "Centro",
+		"refVehicleModel": "vehiclemodel:econic",
+		"vehiclePlateIdentifier": "3456ABC"
+	},
+	"schemaUrl": "https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json",
+	"error": false
+}
 ```
 
  
@@ -267,10 +342,10 @@ Cf. screenshot at the top of this document.
 
 ### Piping on command line
 ```sh
-echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"BasicVehicle","vehicleType":"lorry","category1":"municipalServices","latitude":-3.164485591715449,"longitude":40.62785133667262,"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided1":"garbageCollection","serviceProvided2":"wasteContainerCleaning","areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | \
+echo '{"payload":{"id":"TA120-T246177","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","sonometerClass":"1","location":{"coordinates":[24.985891,60.274286],"type":"Point"},"measurand":["LAeq | 48.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:09.000000Z","LAeq":48.6,"type":"NoiseLevelObserved"}}}' | \
 node ./index.js json-multi-schema-transformer --transformsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"' | \
 node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"' | \
-node ./index.js json-multi-schema-validator
+node ./index.js json-multi-schema-validator | jq .
 ```
 
 _Note_: This is the example used for `npm test`
@@ -287,8 +362,9 @@ jq -c '.[] | {"payload":.}'
 Example from an URL:
 
 ```sh
-curl 'https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?limit=10&options=keyValues' | \
+curl 'https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?limit=10' | \
 jq -c '.[] | {"payload":.}' | \
+node ./index.js json-multi-schema-transformer --transformsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"' | \
 node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json"' | \
 node ./index.js json-multi-schema-validator | \
 jq -c .
