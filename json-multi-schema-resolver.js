@@ -48,13 +48,14 @@ module.exports = RED => {
 
 		node.on('input', async msg => {
 			delete msg.schemaUrl;
-			delete msg.error;
+			msg.error = msg.error ? msg.error + ' ; ' : '';
 			try {
 				const schemaUrl = await resolveAsync(msg.payload);
 				if (schemaUrl != '') {
 					msg.schemaUrl = schemaUrl;
+					msg.error = msg.error != '';
 				} else {
-					msg.error = util.format('Failed resolving schema using "%s"', mappingsUrl);
+					msg.error += util.format('Failed resolving schema using "%s"', mappingsUrl);
 				}
 				if (lastStatusError) {
 					node.status({ fill:'green', shape:'dot', text:'OK', });
@@ -63,7 +64,7 @@ module.exports = RED => {
 			} catch (ex) {
 				lastStatusError = true;
 				node.status({ fill:'red', shape:'ring', text:'Error', });
-				msg.error = util.format('Error resolving schema using "%s": %s', mappingsUrl, ex);
+				msg.error += util.format('Error resolving schema using "%s": %s', mappingsUrl, ex);
 			}
 			node.send(msg);
 		});

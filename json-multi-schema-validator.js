@@ -85,16 +85,16 @@ module.exports = RED => {
 		}
 
 		node.on('input', async msg => {
-			delete msg.error;
+			msg.error = msg.error ? msg.error + ' ; ' : '';
 			if (msg.schemaUrl == '') {
-				msg.error = 'Unknown schema!';
+				msg.error += 'Unknown schema!';
 			} else {
 				try {
 					const result = await validateAsync(msg.schemaUrl, msg.payload);
 					if (result === true) {
-						msg.error = false;
+						msg.error = msg.error != '';
 					} else {
-						msg.error = util.format('Failed validatation against "%s": %s', msg.schemaUrl, result);
+						msg.error += util.format('Failed validatation against "%s": %s', msg.schemaUrl, result);
 					}
 					if (lastStatusError) {
 						node.status({ fill:'green', shape:'dot', text:'OK', });
@@ -103,7 +103,7 @@ module.exports = RED => {
 				} catch (ex) {
 					lastStatusError = true;
 					node.status({ fill:'red', shape:'ring', text:'Error', });
-					msg.error = util.format('Failed validatation against "%s": %s', msg.schemaUrl, ex);
+					msg.error += util.format('Failed validatation against "%s": %s', msg.schemaUrl, ex);
 				}
 			}
 			node.send(msg);

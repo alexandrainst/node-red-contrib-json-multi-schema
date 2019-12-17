@@ -89,7 +89,7 @@ module.exports = RED => {
 
 		node.on('input', async msg => {
 			delete msg.transformUrl;
-			delete msg.error;
+			msg.error = msg.error ? msg.error + ' ; ' : '';
 			try {
 				const transformUrl = await resolveAsync(msg.payload);
 				if (transformUrl != '') {
@@ -97,10 +97,11 @@ module.exports = RED => {
 					const result = await transformAsync(msg.payload, msg.transformUrl);
 					if (result) {
 						msg.payload = result;
+						msg.error = msg.error != '';
 					} else {
 						lastStatusError = true;
 						node.status({ fill:'red', shape:'ring', text:'Error', });
-						msg.error = util.format('Failed tranforming using "%s"', transformsUrl);
+						msg.error += util.format('Failed tranforming using "%s"', transformsUrl);
 					}
 					if (lastStatusError) {
 						node.status({ fill:'green', shape:'dot', text:'OK', });
@@ -110,7 +111,7 @@ module.exports = RED => {
 			} catch (ex) {
 				lastStatusError = true;
 				node.status({ fill:'red', shape:'ring', text:'Error', });
-				msg.error = util.format('Error tranforming using "%s": %s : %s', transformsUrl, ex, JSON.stringify(msg.payload));
+				msg.error += util.format('Error tranforming using "%s": %s : %s', transformsUrl, ex, JSON.stringify(msg.payload));
 			}
 			node.send(msg);
 		});
