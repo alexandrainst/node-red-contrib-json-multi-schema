@@ -1,32 +1,11 @@
 [
     {
-        "id": "739f17c6.5cdae8",
-        "type": "inject",
-        "z": "51af8c53.929c6c",
-        "name": "Non-standard (JSON) message",
-        "topic": "",
-        "payload": "{\"id\":\"vehicle:WasteManagement:1\",\"type\":\"BasicVehicle\",\"vehicleType\":\"lorry\",\"category1\":\"municipalServices\",\"latitude\":-3.164485591715449,\"longitude\":40.62785133667262,\"name\":\"C Recogida 1\",\"speed\":50,\"cargoWeight\":314,\"serviceStatus\":\"onRoute\",\"serviceProvided1\":\"garbageCollection\",\"serviceProvided2\":\"wasteContainerCleaning\",\"areaServed\":\"Centro\",\"refVehicleModel\":\"vehiclemodel:econic\",\"vehiclePlateIdentifier\":\"3456ABC\"}",
-        "payloadType": "json",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "x": 210,
-        "y": 820,
-        "wires": [
-            [
-                "707f7dae.377adc"
-            ]
-        ]
-    },
-    {
         "id": "707f7dae.377adc",
         "type": "json-multi-schema-transformer",
         "z": "51af8c53.929c6c",
         "name": "",
-        "transformsUrl": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json",
-        "x": 590,
-        "y": 820,
+        "x": 650,
+        "y": 840,
         "wires": [
             [
                 "1a287ba9.00e0d4"
@@ -39,8 +18,8 @@
         "z": "51af8c53.929c6c",
         "name": "",
         "mappingsUrl": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json",
-        "x": 580,
-        "y": 900,
+        "x": 640,
+        "y": 920,
         "wires": [
             [
                 "80ef3fce.aa4c2"
@@ -52,8 +31,8 @@
         "type": "json-multi-schema-validator",
         "z": "51af8c53.929c6c",
         "name": "",
-        "x": 580,
-        "y": 980,
+        "x": 640,
+        "y": 1000,
         "wires": [
             [
                 "935312e9.392738"
@@ -65,11 +44,11 @@
         "type": "function",
         "z": "51af8c53.929c6c",
         "name": "Result formatter based on \"msg.error\"",
-        "func": "if (msg.error) {\n    msg.payload = '❌ Invalid according to ' + msg.schemaUrl + ' : ' + msg.error;\n} else {\n    msg.payload = '✔ Valid️ according to ' + msg.schemaUrl;\n}\nreturn msg;\n",
+        "func": "if (msg.error || !msg.validUrl ) {\n    msg.result = '❌ Invalid according to ' + msg.validUrl + ' : ' + msg.error;\n} else {\n    msg.result = '✔ Valid️ according to ' + msg.validUrl;\n}\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 610,
-        "y": 1060,
+        "x": 670,
+        "y": 1080,
         "wires": [
             [
                 "e3a048d.4f836b8"
@@ -85,10 +64,10 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload",
+        "complete": "result",
         "targetType": "msg",
-        "x": 890,
-        "y": 1060,
+        "x": 950,
+        "y": 1080,
         "wires": []
     },
     {
@@ -97,14 +76,14 @@
         "z": "51af8c53.929c6c",
         "name": "Standard message with unknown schema",
         "topic": "",
-        "payload": "{\"id\":\"vehicle:WasteManagement:1\",\"type\":\"Vehicle\",\"vehicleType\":\"lorry\",\"category\":[\"municipalServices\"],\"location\":{\"type\":\"Point\",\"coordinates\":[40.62785133667262,-3.164485591715449]},\"name\":\"C Recogida 1\",\"speed\":50,\"cargoWeight\":314,\"serviceStatus\":\"onRoute\",\"serviceProvided\":[\"garbageCollection\",\"wasteContainerCleaning\"],\"areaServed\":\"Centro\",\"refVehicleModel\":\"vehiclemodel:econic\",\"vehiclePlateIdentifier\":\"3456ABC\"}",
+        "payload": "{\"id\":\"wastecontainer:Fleming:12a\",\"type\":\"WasteContainer\",\"status\":\"ok\",\"category\":[\"underground\"],\"dateLastEmptying\":\"2016-06-21T15:05:59.408Z\",\"serialNumber\":\"ab56kjl\",\"nextActuationDeadline\":\"2016-06-28T15:05:59.408Z\",\"refWasteContainerIsle\":\"wastecontainerisle:Fleming:12\",\"refDevice\":[\"device-Fleming:12a:1\"],\"location\":{\"type\":\"Point\",\"coordinates\":[-3.164485591715,40.62785133667]},\"fillingLevel\":0.4,\"refWasteContainerModel\":\"wastecontainermodel:c1\"}",
         "payloadType": "json",
         "repeat": "",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "x": 240,
-        "y": 900,
+        "x": 200,
+        "y": 920,
         "wires": [
             [
                 "1a287ba9.00e0d4"
@@ -123,8 +102,8 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "x": 130,
-        "y": 1060,
+        "x": 90,
+        "y": 1000,
         "wires": [
             [
                 "c16edc29.b8e628"
@@ -136,11 +115,11 @@
         "type": "function",
         "z": "51af8c53.929c6c",
         "name": "Standard message with known schema",
-        "func": "msg.payload = {\n        \"id\": \"vehicle:WasteManagement:1\",\n        \"type\": \"Vehicle\",\n        \"vehicleType\": \"lorry\",\n        \"category\": [\n            \"municipalServices\"\n        ],\n        \"location\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n                40.62785133667262,\n                -3.164485591715449\n            ]\n        },\n        \"name\": \"C Recogida 1\",\n        \"speed\": 50,\n        \"cargoWeight\": 314,\n        \"serviceStatus\": \"onRoute\",\n        \"serviceProvided\": [\n            \"garbageCollection\",\n            \"wasteContainerCleaning\"\n        ],\n        \"areaServed\": \"Centro\",\n        \"refVehicleModel\": \"vehiclemodel:econic\",\n        \"vehiclePlateIdentifier\": \"3456ABC\"\n    };\nmsg.schemaUrl = \"https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json\";\nreturn msg;\n",
+        "func": "msg.payload = {\n    \"id\": \"urn:ngsi-ld:Alert:Alert:1\",\n    \"type\": \"Alert\",\n    \"createdAt\": \"2019-06-06T12:06:06\",\n    \"modifiedAt\": \"2019-06-07T12:07:06\",\n    \"category\": {\n        \"type\": \"Property\",\n        \"value\": \"traffic\"\n    },\n    \"subCategory\": {\n        \"type\": \"Property\",\n        \"value\": \"trafficJam\"\n    },\n    \"validTo\": {\n        \"type\": \"Property\",\n        \"value\": {\n            \"@type\": \"DateTime\",\n            \"@value\": \"2017-01-02T10:25:55.00Z\"\n        }\n    },\n    \"description\": {\n        \"type\": \"Property\",\n        \"value\": \"The road is completely blocked for 3kms\"\n    },\n    \"location\": {\n        \"type\": \"GeoProperty\",\n        \"value\": {\n            \"type\": \"Point\",\n            \"coordinates\": [-3.712247222222222, 40.423852777777775]\n        }\n    },\n    \"dateIssued\": {\n        \"type\": \"Property\",\n        \"value\": {\n            \"@type\": \"DateTime\",\n            \"@value\": \"2017-01-02T09:25:55.00Z\"\n        }\n    },\n    \"alertSource\": {\n        \"type\": \"Property\",\n        \"value\": \"https://account.lab.fiware.org/users/8\"\n    },\n    \"validFrom\": {\n        \"type\": \"Property\",\n        \"value\": {\n            \"@type\": \"DateTime\",\n            \"@value\": \"2017-01-02T09:25:55.00Z\"\n        }\n    },\n    \"severity\": {\n        \"type\": \"Property\",\n        \"value\": \"high\"\n    },\n    \"@context\": [\n        \"https://schema.lab.fiware.org/ld/context\",\n        \"https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld\"\n    ]\n};\nmsg.schemaUrl = \"https://smart-data-models.github.io/data-models/specs/Alert/alert-schema.json\";\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 240,
-        "y": 980,
+        "x": 320,
+        "y": 1000,
         "wires": [
             [
                 "80ef3fce.aa4c2"
@@ -153,18 +132,88 @@
         "z": "51af8c53.929c6c",
         "name": "using \"Mappings URL\" property",
         "info": "",
-        "x": 890,
+        "x": 950,
         "y": 900,
         "wires": []
     },
     {
-        "id": "7f14c104.4f98e8",
+        "id": "51317bda.0a468c",
+        "type": "inject",
+        "z": "51af8c53.929c6c",
+        "name": "Non-standard message with unknown transformation",
+        "topic": "",
+        "payload": "{\"id\":\"TA120-T246177\",\"type\":\"Cesva-TA120\",\"NoiseLevelObserved\":{\"id\":\"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z\",\"sonometerClass\":\"1\",\"location\":{\"coordinates\":[24.985891,60.274286],\"type\":\"Point\"},\"measurand\":[\"LAeq | 48.6 | A-weighted, equivalent, sound level\"],\"dateObserved\":\"2018-09-17T07:01:09.000000Z\",\"LAeq\":48.6,\"type\":\"NoiseLevelObserved\"}}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 230,
+        "y": 760,
+        "wires": [
+            [
+                "cd146fe0.82e9f"
+            ]
+        ]
+    },
+    {
+        "id": "cd146fe0.82e9f",
+        "type": "json-multi-schema-resolver",
+        "z": "51af8c53.929c6c",
+        "name": "",
+        "mappingsUrl": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json",
+        "x": 640,
+        "y": 760,
+        "wires": [
+            [
+                "707f7dae.377adc"
+            ]
+        ]
+    },
+    {
+        "id": "80f398e9.42f2c",
         "type": "comment",
         "z": "51af8c53.929c6c",
-        "name": "using \"Transforms URL\" property",
+        "name": "using \"Mappings URL\" property",
         "info": "",
-        "x": 890,
-        "y": 820,
+        "x": 950,
+        "y": 760,
         "wires": []
+    },
+    {
+        "id": "c9e40c.0b8663f8",
+        "type": "inject",
+        "z": "51af8c53.929c6c",
+        "name": "Trigger",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 90,
+        "y": 840,
+        "wires": [
+            [
+                "67995555.798d54"
+            ]
+        ]
+    },
+    {
+        "id": "67995555.798d54",
+        "type": "function",
+        "z": "51af8c53.929c6c",
+        "name": "Standard message with known schema",
+        "func": "msg.payload = {\n    \"id\": \"TA120-T246177\",\n    \"type\": \"Cesva-TA120\",\n    \"NoiseLevelObserved\": {\n        \"id\": \"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z\",\n        \"sonometerClass\": \"1\",\n        \"location\": {\n            \"coordinates\": [\n                24.985891,\n                60.274286\n            ],\n            \"type\": \"Point\"\n        },\n        \"measurand\": [\n            \"LAeq | 48.6 | A-weighted, equivalent, sound level\"\n        ],\n        \"dateObserved\": \"2018-09-17T07:01:09.000000Z\",\n        \"LAeq\": 48.6,\n        \"type\": \"NoiseLevelObserved\"\n    }\n};\nmsg.schemaUrl = \"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js\";\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 320,
+        "y": 840,
+        "wires": [
+            [
+                "707f7dae.377adc"
+            ]
+        ]
     }
 ]
