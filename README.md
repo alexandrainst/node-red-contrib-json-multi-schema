@@ -30,7 +30,7 @@ Here is an example of full Node-RED flow: [Node-RED_example_of_flow.json](exampl
 * *Purpose*: Ability to determine the URL of the JSON Schema (e.g. FIWARE NGSI) or JSONata expression to use for a given JSON payload received.
 * *Configuration*: A Node-RED `mappingsUrl` property to indicate the URL of a file listing which JSON Schema or JSONata expression to use for which data input. (See examples below).
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property.
-* *Output*: The unmodified JSON observation in the `msg.payload` property, and the resolved schema URL in the `msg.schemaUrl` property.
+* *Output*: The unmodified JSON observation in the `msg.payload` property, and the resolved schema URL in the `msg.schemaUrl` property (if any match was found).
 
 ### Example of input data
 This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Transportation/Vehicle/Vehicle/doc/spec/index.html), for which we need to look-up the [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/VehicleModel/schema.json).
@@ -166,7 +166,8 @@ Output:
 * *Context*: Node-RED node, or command line with `index.js multi-schema-transformer`
 * *Purpose*: Ability to transform a JSON observation on the fly from whichever format to another format (e.g. one of the FIWARE NGSI types) using a specified JSONata URL. Schemas are automatically downloaded and cached the first time they are needed.
 * *Input*: A JSON observation in whichever format in the `msg.payload` property, and the corresponding JSONata URL on the `msg.schemaUrl` property (coming from json-multi-schema-resolver).
-* *Output*: The transformed JSON observation in the `msg.payload` property, and potential validation errors in the `msg.error` property.
+  * If no `msg.schemaUrl` is provided, no transformation is performed.
+* *Output*: The transformed JSON observation in the `msg.payload` property, the used JSONata in the `msg.transformUrl` (if any transformation was performed), and potential validation errors in the `msg.error` property.
 * *Implementation*: Based on [JSONata](https://github.com/jsonata-js/jsonata).
 
 It is typically used with a *json-multi-schema-resolver* node in front.
@@ -261,7 +262,8 @@ Output:
 * *Context*: Node-RED node, or command line with `./index.js json-multi-schema-validator`
 * *Purpose*: Ability to validate a JSON observation (e.g. one of the FIWARE NGSI types) on the fly against a specified JSON Schema URL. Schemas are automatically downloaded and cached the first time they are needed.
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property, and the corresponding JSON Schema URL on the `msg.schemaUrl` property (coming from json-multi-schema-resolver).
-* *Output*: The unmodified JSON observation in the `msg.payload` property, and potential validation errors in the `msg.error` property.
+  * If no `msg.schemaUrl` is provided, no validation is performed.
+* *Output*: The unmodified JSON observation in the `msg.payload` property, the used schema in the `msg.validUrl` (if any validation was performed), and potential validation errors in the `msg.error` property.
 * *Implementation*: Based on [AJV](https://ajv.js.org).
 
 It is typically used with a *json-multi-schema-resolver* node in front.

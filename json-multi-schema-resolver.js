@@ -54,8 +54,6 @@ module.exports = RED => {
 				if (schemaUrl != '') {
 					msg.schemaUrl = schemaUrl;
 					msg.error = msg.error != '';
-				} else {
-					msg.error += util.format('Failed resolving schema using "%s"', mappingsUrl);
 				}
 				if (lastStatusError) {
 					node.status({ fill:'green', shape:'dot', text:'OK', });

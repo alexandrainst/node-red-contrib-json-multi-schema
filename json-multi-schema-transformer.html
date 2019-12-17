@@ -25,8 +25,8 @@
 	<p>Node to transform a JSON observation to another format using a configurable set of JSONata rules.</p>
 	<ul>
 		<li>The node will transform a given JSON payload received in <code>msg.payload</code> using some JSONata rules, which URL is given in <code>msg.schemaUrl</code></li>
-		<li>The URL of the corresponding JSONata file is returned in <code>msg.transformUrl</code>.</li>
-		<li>The transformed payload is returned in <code>msg.payload</code>.</li>
+		<li>If any transformation is actually performed, the URL of the corresponding JSONata file is returned in <code>msg.transformUrl</code>.</li>
+		<li>The transformed payload is returned in <code>msg.payload</code>. If no <code>msg.schemaUrl</code> is provided, no transformation is performed.</li>
 		<li>Errors are returned on <code>msg.error</code></li>
 	</ul>
 	<p>Example of file containing the list of transformations:</p>

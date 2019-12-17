@@ -90,9 +90,7 @@ module.exports = RED => {
 
 		node.on('input', async msg => {
 			msg.error = msg.error ? msg.error + ' ; ' : '';
-			if (msg.schemaUrl == '') {
-				msg.error += 'Unknown schema!';
-			} else {
+			if (msg.schemaUrl != '') {
 				msg.validUrl = msg.schemaUrl;
 				try {
 					const result = await validateAsync(msg.payload, msg.schemaUrl);
