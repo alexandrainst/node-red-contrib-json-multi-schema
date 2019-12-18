@@ -3,7 +3,7 @@ Set of generic JSON data pipeline tools, suitable for continuous/streaming input
 
 Three distinct nodes allow transforming, resolving schemas, and validating different types of JSON inputs.
 
-The nodes are made for [Node-RED](https://nodered.org) but can alternatively be run from command-line using standard input/output.
+The nodes are made for [Node-RED](https://nodered.org) but can alternatively be [run from command-line](https://github.com/alexandrainst/node-red-contrib-mock-cli) using standard input/output.
 Matching rules and transformation rules are written in [JSONata](http://jsonata.org) (JSON query and transformation language), in external files.
 
 Appropriate e.g. for working with [FIWARE](https://www.fiware.org/developers/data-models/)’s [Smart Data Models](https://smart-data-models.github.io/data-models/),
@@ -352,6 +352,8 @@ jq .
 
 _Note_: This is the example used for `npm test`
 
+The CLI functionnality is provided by [*node-red-contrib-mock-cli*](https://github.com/alexandrainst/node-red-contrib-mock-cli).
+
 ### JSON in Node-RED format
 [`jq`](https://stedolan.github.io/jq/) may be used to break down and format a standard payload into a Node-RED payload:
 
@@ -450,6 +452,6 @@ Read more on the [Node-RED cookbook](https://cookbook.nodered.org/http/serve-jso
 
 A disk copy of the downloaded JSON and JSONata documents is kept in cache on disk.
 By default, the cache path is `/tmp/` but that can be changed with the environment variable `SCHEMAS_CACHE_PATH`
-Cached files have a `*.tmp.js` suffix.
+Cached files have a `schema.[URL hash].[Node ID].tmp.js` format.
 
 If schemas are updated without changing their URL, it is possible to either purge the local cache manually, or add a version number at the end of their URL, such as `https://example.net/a-schema.json?v2`

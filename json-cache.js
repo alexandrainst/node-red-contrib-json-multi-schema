@@ -64,7 +64,7 @@ module.exports = node => {
 
 		let text, json, hash;
 		if (cachePath) {
-			hash = cachePath + crypto.createHash('sha256').update(url).digest('hex') + '.tmp.js';
+			hash = cachePath + 'schema.' + crypto.createHash('sha256').update(url).digest('hex') + '.' + node.id + '.tmp.js';
 			try {
 				text = await readFileAsync(hash, 'utf8');
 				node.debug('Load JSON from disk cache: ' + url);

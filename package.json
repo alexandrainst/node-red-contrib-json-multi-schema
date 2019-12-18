@@ -1,6 +1,6 @@
 {
 	"name": "node-red-contrib-json-multi-schema",
-	"version": "0.5.2",
+	"version": "1.0.0",
 	"description": "Generic JSON data pipeline tools, with dynamic transformation (using JSONata rules), resolving JSON Schema (using JSONata rules), and then validation (using JSON Schema). For Node-RED and for command-line.",
 	"main": "index.js",
 	"readmeFilename": "readme.md",
@@ -32,7 +32,7 @@
 		"ajv": "^6.10.2",
 		"jsonata": "^1.7.0",
 		"node-fetch": "^2.6.0",
-		"node-red-contrib-mock-cli": "https://github.com/alexandrainst/node-red-contrib-mock-cli.git#7dd9eaafb8d5f3293793d7b778c8d4ae72fb3c14"
+		"node-red-contrib-mock-cli": "^1.0.0"
 	},
 	"devDependencies": {
 		"jshint": "^2.10.3"
@@ -47,6 +47,6 @@
 		"start": "node ./index.js",
 		"lint": "node ./node_modules/.bin/jshint *.js",
 		"pretest": "npm run-script lint",
-		"test": "rm /tmp/*.tmp.js ; printf '{\"payload\":{\"id\":\"TA120-T246177\",\"type\":\"Cesva-TA120\",\"NoiseLevelObserved\":{\"id\":\"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z\",\"sonometerClass\":\"1\",\"location\":{\"coordinates\":[24.985891,60.274286],\"type\":\"Point\"},\"measurand\":[\"LAeq | 48.6 | A-weighted, equivalent, sound level\"],\"dateObserved\":\"2018-09-17T07:01:09.000000Z\",\"LAeq\":48.6,\"type\":\"NoiseLevelObserved\"}}} \\n {\"payload\":{\"id\":\"TA120-T246183\",\"type\":\"Cesva-TA120\",\"NoiseLevelObserved\":{\"id\":\"TA120-T246183-NoiseLevelObserved-2018-09-17T07:01:15.000000Z\",\"sonometerClass\":\"1\",\"location\":{\"coordinates\":[24.9030921,60.161804],\"type\":\"Point\"},\"measurand\":[\"LAeq | 37.6 | A-weighted, equivalent, sound level\"],\"dateObserved\":\"2018-09-17T07:01:15.000000Z\",\"LAeq\":37.6,\"type\":\"NoiseLevelObserved\"}}}' | node ./index.js json-multi-schema-resolver --mappingsUrl='\"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json\"' | node ./index.js json-multi-schema-transformer | node ./index.js json-multi-schema-resolver --mappingsUrl='\"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json\"' | node ./index.js json-multi-schema-validator"
+		"test": "rm /tmp/schema.*.tmp.js ; printf '{\"payload\":{\"id\":\"TA120-T246177\",\"type\":\"Cesva-TA120\",\"NoiseLevelObserved\":{\"id\":\"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z\",\"sonometerClass\":\"1\",\"location\":{\"coordinates\":[24.985891,60.274286],\"type\":\"Point\"},\"measurand\":[\"LAeq | 48.6 | A-weighted, equivalent, sound level\"],\"dateObserved\":\"2018-09-17T07:01:09.000000Z\",\"LAeq\":48.6,\"type\":\"NoiseLevelObserved\"}}} \\n {\"payload\":{\"id\":\"TA120-T246183\",\"type\":\"Cesva-TA120\",\"NoiseLevelObserved\":{\"id\":\"TA120-T246183-NoiseLevelObserved-2018-09-17T07:01:15.000000Z\",\"sonometerClass\":\"1\",\"location\":{\"coordinates\":[24.9030921,60.161804],\"type\":\"Point\"},\"measurand\":[\"LAeq | 37.6 | A-weighted, equivalent, sound level\"],\"dateObserved\":\"2018-09-17T07:01:15.000000Z\",\"LAeq\":37.6,\"type\":\"NoiseLevelObserved\"}}}' | node ./index.js json-multi-schema-resolver --mappingsUrl='\"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json\"' | node ./index.js json-multi-schema-transformer | node ./index.js json-multi-schema-resolver --mappingsUrl='\"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json\"' | node ./index.js json-multi-schema-validator"
 	}
 }
