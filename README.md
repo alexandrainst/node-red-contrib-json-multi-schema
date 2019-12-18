@@ -1,5 +1,5 @@
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/alexandrainst/node-red-contrib-json-multi-schema/Node%20CI?logo=github)
-![npm](https://img.shields.io/npm/dy/node-red-contrib-mock-cli?logo=npm)
+![npm](https://img.shields.io/npm/dy/node-red-contrib-json-multi-schema?logo=npm)
 ![Docker Pulls](https://img.shields.io/docker/pulls/synchronicityiot/node-red-contrib-json-multi-schema?logo=docker)
 
 # node-red-contrib-json-multi-schema
