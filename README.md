@@ -30,7 +30,7 @@ Here is an example of full Node-RED flow: [Node-RED_example_of_flow.json](exampl
 * *Purpose*: Ability to determine the URL of the JSON Schema (e.g. FIWARE NGSI) or JSONata expression to use for a given JSON payload received.
 * *Configuration*: A Node-RED `mappingsUrl` property to indicate the URL of a file listing which JSON Schema or JSONata expression to use for which data input. (See examples below).
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property.
-* *Output*: The unmodified JSON observation in the `msg.payload` property, and the resolved schema URL in the `msg.schemaUrl` property (if any match was found).
+* *Output*: The unmodified JSON observation in the `msg.payload` property, and the resolved schema URL in the `msg.schemaUrl` property (if any match was found), and potential resolution errors in the `msg.error` property.
 
 ### Example of input data
 This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Transportation/Vehicle/Vehicle/doc/spec/index.html), for which we need to look-up the [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/VehicleModel/schema.json).
@@ -73,6 +73,7 @@ In the example, this JSON file is hosted at [`examples/smart-data-models.json`](
 		"cases": {
 			"AeroAllergenObserved": "https://smart-data-models.github.io/data-models/specs/Environment/AeroAllergenObserved/schema.json",
 			...
+			"NoiseLevelObserved": "https://smart-data-models.github.io/data-models/specs/Environment/NoiseLevelObserved/schema.json",
 			"Vehicle": "https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json",
 			"WasteContainer": "https://smart-data-models.github.io/data-models/specs/WasteManagement/WasteContainer/schema.json",
 		}
@@ -114,6 +115,7 @@ In the example, this JSON file is hosted at [`examples/smart-data-transforms.jso
 
 ### Example of schema resolution from command line
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
+See the `jq` examples at the bottom on how to automatise the wrapping.
 
 ```sh
 echo '{"payload":{"id":"vehicle:WasteManagement:1","type":"Vehicle","vehicleType":"lorry","category":["municipalServices"],"location":{"type":"Point","coordinates":[40.62785133667262,-3.164485591715449]},"name":"C Recogida 1","speed":50,"cargoWeight":314,"serviceStatus":"onRoute","serviceProvided":["garbageCollection","wasteContainerCleaning"],"areaServed":"Centro","refVehicleModel":"vehiclemodel:econic","vehiclePlateIdentifier":"3456ABC"}}' | \
@@ -174,30 +176,32 @@ It is typically used with a *json-multi-schema-resolver* node in front.
 
 ### Example of input data
 
-This is an example of proprietary format, which we would like to be transformed into another format (a standard NGSI one).
+This is an example of proprietary format, which we would like to transform into another format (a standard NGSI one).
 
 We represent the example as a full Node-RED message, i.e. wrapped into a `{"payload":...}` structure.
 
 ```json
 {
-	"id": "TA120-T246177",
-	"type": "Cesva-TA120",
-	"NoiseLevelObserved": {
-		"id": "TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z",
-		"sonometerClass": "1",
-		"location": {
-			"coordinates": [
-				24.985891,
-				60.274286
+	"payload": {
+		"id": "TA120-T246177",
+		"type": "Cesva-TA120",
+		"NoiseLevelObserved": {
+			"id": "TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z",
+			"sonometerClass": "1",
+			"location": {
+				"coordinates": [
+					24.985891,
+					60.274286
+				],
+				"type": "Point"
+			},
+			"measurand": [
+				"LAeq | 48.6 | A-weighted, equivalent, sound level"
 			],
-			"type": "Point"
-		},
-		"measurand": [
-			"LAeq | 48.6 | A-weighted, equivalent, sound level"
-		],
-		"dateObserved": "2018-09-17T07:01:09.000000Z",
-		"LAeq": 48.6,
-		"type": "NoiseLevelObserved"
+			"dateObserved": "2018-09-17T07:01:09.000000Z",
+			"LAeq": 48.6,
+			"type": "NoiseLevelObserved"
+		}
 	}
 }
 ```
@@ -269,7 +273,7 @@ Output:
 It is typically used with a *json-multi-schema-resolver* node in front.
 
 ### Example of input data
-This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Transportation/Vehicle/Vehicle/doc/spec/index.html), which we want to validate against its [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/VehicleModel/schema.json), which address is provided by the Node-RED property `msg.schemaUrl`.
+This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Environment/NoiseLevelObserved/doc/spec/index.html#noise-level-observed), which we want to validate against its [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Environment/NoiseLevelObserved/schema.json), which address is provided by the Node-RED property `msg.schemaUrl`.
 
 ```json
 {
@@ -369,17 +373,6 @@ node ./index.js json-multi-schema-validator | \
 jq -c .
 ```
 
- 
-
----
-
- 
-
-## Caching
-
-A disk copy of the downloaded JSON and JSONata documents is kept in cache on disk.
-By default, the cache path is `/tmp/` but that can be changed with the environment variable `SCHEMAS_CACHE_PATH`
-Cached files have a `*.tmp.js` suffix.
 
  
 
@@ -447,8 +440,16 @@ Here is an example of full Node-RED flow: [Node-RED_example_of_HTTP_flow.json](e
 
 Read more on the [Node-RED cookbook](https://cookbook.nodered.org/http/serve-json-content).
 
-### Caching of schemas
+ 
 
-Once downloaded, a copy of the schemas is saved on local disk (by default in `/tmp/`).
+---
+
+ 
+
+## Caching of schemas
+
+A disk copy of the downloaded JSON and JSONata documents is kept in cache on disk.
+By default, the cache path is `/tmp/` but that can be changed with the environment variable `SCHEMAS_CACHE_PATH`
+Cached files have a `*.tmp.js` suffix.
 
 If schemas are updated without changing their URL, it is possible to either purge the local cache manually, or add a version number at the end of their URL, such as `https://example.net/a-schema.json?v2`
