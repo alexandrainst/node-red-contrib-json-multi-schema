@@ -1,9 +1,11 @@
+# node-red-contrib-json-multi-schema
+Generic Node-RED nodes for a JSON data pipeline, suitable for continuous/streaming input, and with dynamic configuration.
+
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/alexandrainst/node-red-contrib-json-multi-schema/Node%20CI?logo=github)
 ![npm](https://img.shields.io/npm/dy/node-red-contrib-json-multi-schema?logo=npm)
 ![Docker Pulls](https://img.shields.io/docker/pulls/synchronicityiot/node-red-contrib-json-multi-schema?logo=docker)
 
-# node-red-contrib-json-multi-schema
-Set of generic JSON data pipeline tools, suitable for continuous/streaming input, and with dynamic configuration.
+[![NPM statistics](https://nodei.co/npm/node-red-contrib-json-multi-schema.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/node-red-contrib-json-multi-schema/)
 
 Three distinct nodes allow transforming, resolving schemas, and validating different types of JSON inputs.
 
