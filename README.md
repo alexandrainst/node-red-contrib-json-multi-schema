@@ -30,7 +30,7 @@ Here is an example of full Node-RED flow: [Node-RED_example_of_flow.json](exampl
  
 
 ## node-red-contrib-json-multi-schema-resolver
-* *Context*: Node-RED node, or command line with `./index.js json-multi-schema-resolver --mappingsUrl='"https://..."'`
+* *Context*: Node-RED node, or command line with `node ./index.js json-multi-schema-resolver --mappingsUrl='"https://..."'`
 * *Purpose*: Ability to determine the URL of the JSON Schema (e.g. FIWARE NGSI) or JSONata expression to use for a given JSON payload received.
 * *Configuration*: A Node-RED `mappingsUrl` property to indicate the URL of a file listing which JSON Schema or JSONata expression to use for which data input. (See examples below).
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property.
@@ -169,7 +169,7 @@ Output:
  
 
 ## node-red-contrib-json-multi-schema-transformer
-* *Context*: Node-RED node, or command line with `index.js multi-schema-transformer`
+* *Context*: Node-RED node, or command line with `node ./index.js multi-schema-transformer`
 * *Purpose*: Ability to transform a JSON observation on the fly from whichever format to another format (e.g. one of the FIWARE NGSI types) using a specified JSONata URL. Schemas are automatically downloaded and cached the first time they are needed.
 * *Input*: A JSON observation in whichever format in the `msg.payload` property, and the corresponding JSONata URL on the `msg.schemaUrl` property (coming from json-multi-schema-resolver).
   * If no `msg.schemaUrl` is provided, no transformation is performed.
@@ -267,7 +267,7 @@ Output:
  
 
 ## node-red-contrib-json-multi-schema-validator
-* *Context*: Node-RED node, or command line with `./index.js json-multi-schema-validator`
+* *Context*: Node-RED node, or command line with `node ./index.js json-multi-schema-validator`
 * *Purpose*: Ability to validate a JSON observation (e.g. one of the FIWARE NGSI types) on the fly against a specified JSON Schema URL. Schemas are automatically downloaded and cached the first time they are needed.
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property, and the corresponding JSON Schema URL on the `msg.schemaUrl` property (coming from json-multi-schema-resolver).
   * If no `msg.schemaUrl` is provided, no validation is performed.
