@@ -12,10 +12,9 @@ Three distinct nodes allow transforming, resolving schemas, and validating diffe
 The nodes are made for [Node-RED](https://nodered.org) but can alternatively be [run from command-line](https://github.com/alexandrainst/node-red-contrib-mock-cli) using standard input/output.
 Matching rules and transformation rules are written in [JSONata](http://jsonata.org) (JSON query and transformation language), in external files.
 
-Appropriate e.g. for working with [FIWARE](https://www.fiware.org/developers/data-models/)’s [Smart Data Models](https://smart-data-models.github.io/data-models/),
-but not limited to any model.
+Appropriate e.g. for working with [FIWARE](https://www.fiware.org/developers/data-models/)’s [Smart Data Models](https://smart-data-models.github.io/data-models/), but not limited to any model.
 
-Made by [Alexandre Alapetite](https://alexandra.dk/alexandre.alapetite) at the [Alexandra Institute](https://alexandra.dk) for the [SynchroniCity European project](https://synchronicity-iot.eu) as a contribution to [FIWARE](https://www.fiware.org). `#AtomicService`
+Originally made by [Alexandre Alapetite](https://alexandra.dk/alexandre.alapetite) at the [Alexandra Institute](https://alexandra.dk) for the [SynchroniCity European project](https://synchronicity-iot.eu) as a contribution to [FIWARE](https://www.fiware.org). `#AtomicService`
 
 License: [MIT](LICENSE.md), 2019
 

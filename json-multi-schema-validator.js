@@ -37,7 +37,8 @@ module.exports = RED => {
 			let validatorCache = validators[schemaUrl];
 			if (validatorCache) {
 				if (validatorCache.validator === null) {
-					//Wait for another task to be done building the validator for the same desired schema, so that we can use its cache
+					//Wait for another task to be done building the validator for the same desired schema,
+					//so that we can use its cache
 					await new Promise((resolve, reject) => validatorCache.mutexQueue.push(resolve));
 				}
 				//Perform validation
