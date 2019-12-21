@@ -439,11 +439,13 @@ Any HTTP server can be used to host those documents. This can also be done using
 
 ### Local Node-RED hosting
 
-The same Node-RED instance can be used to host the various lists and custom schemas.
+The same Node-RED instance can be used to host the various lists and custom schemas, which are then accessible via `http://localhost:1880/*`
 
 Here is an example of full Node-RED flow: [Node-RED_example_of_HTTP_flow.json](examples/Node-RED_example_of_HTTP_flow.json)
 
 ![Node-RED flow](examples/Node-RED_example_of_HTTP_flow.png)
+
+In this example, the schemas are published at `http://localhost:1880/schemas/example.json` where `example.json` is the filename.
 
 Read more on the [Node-RED cookbook](https://cookbook.nodered.org/http/serve-json-content).
 
@@ -456,7 +458,9 @@ Read more on the [Node-RED cookbook](https://cookbook.nodered.org/http/serve-jso
 ## Caching of schemas
 
 A disk copy of the downloaded JSON and JSONata documents is kept in cache on disk.
+There is a distinct disk cache copy for each node instance.
+
 By default, the cache path is `/tmp/` but that can be changed with the environment variable `SCHEMAS_CACHE_PATH`
 Cached files have a `schema.[URL hash].[Node ID].tmp.js` format.
 
-If schemas are updated without changing their URL, it is possible to either purge the local cache manually, or add a version number at the end of their URL, such as `https://example.net/a-schema.json?v2`
+If schemas are updated without changing their URL, it is possible to either alter the URL slightly (like `https://example.net/a-schema.json?v2`), delete and recreate the node (so that the node gets a new ID), or purge the local disk cache manually (in which case it is necessary to restart Node-RED to clear the memory cache).
