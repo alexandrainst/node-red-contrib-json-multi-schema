@@ -15,6 +15,7 @@ module.exports = RED => {
 	function JsonMultiSchemaTransformerNode(config) {
 		RED.nodes.createNode(this, config);
 		const node = this;
+		const defaultSchemaUrl = config.defaultSchemaUrl;
 
 		let lastStatusError = true;
 		node.status({ fill:'grey', shape:'ring', text:'Uninitialized', });
@@ -62,6 +63,9 @@ module.exports = RED => {
 
 		node.on('input', async msg => {
 			msg.error = msg.error ? msg.error + ' ; ' : '';
+			if (!msg.schemaUrl) {
+				msg.schemaUrl = defaultSchemaUrl;
+			}
 			if (msg.schemaUrl) {
 				msg.transformUrl = msg.schemaUrl;
 				try {

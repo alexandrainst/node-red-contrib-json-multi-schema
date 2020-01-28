@@ -173,7 +173,8 @@ Output:
 * *Context*: Node-RED node, or command line with `node ./index.js multi-schema-transformer`
 * *Purpose*: Ability to transform a JSON observation on the fly from whichever format to another format (e.g. one of the FIWARE NGSI types) using a specified JSONata URL. Schemas are automatically downloaded and cached the first time they are needed.
 * *Input*: A JSON observation in whichever format in the `msg.payload` property, and the corresponding JSONata URL on the `msg.schemaUrl` property (coming from json-multi-schema-resolver).
-  * If no `msg.schemaUrl` is provided, no transformation is performed.
+  * Alternatively, a static default value for the schema URL can be set in the corresponding property.
+  * If no `msg.schemaUrl` is provided, and no value set in the default schema URL property, then no transformation is performed.
 * *Output*: The transformed JSON observation in the `msg.payload` property, the used JSONata in the `msg.transformUrl` (if any transformation was performed), and potential validation errors in the `msg.error` property.
 * *Implementation*: Based on [JSONata](https://github.com/jsonata-js/jsonata).
 
@@ -235,6 +236,14 @@ The JSON input messages must each be on one single line, and wrapped into a Node
 ```sh
 echo '{"payload":{"id":"TA120-T246177","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","sonometerClass":"1","location":{"coordinates":[24.985891,60.274286],"type":"Point"},"measurand":["LAeq | 48.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:09.000000Z","LAeq":48.6,"type":"NoiseLevelObserved"}},"error":false,"schemaUrl":"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"}' | \
 node ./index.js json-multi-schema-transformer | \
+jq .
+```
+
+Same example, but using a static default value for the schema URL in the corresponding property:
+
+```
+echo '{"payload":{"id":"TA120-T246177","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","sonometerClass":"1","location":{"coordinates":[24.985891,60.274286],"type":"Point"},"measurand":["LAeq | 48.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:09.000000Z","LAeq":48.6,"type":"NoiseLevelObserved"}},"error":false}' | \
+node ./index.js json-multi-schema-transformer --defaultSchemaUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"' | \
 jq .
 ```
 
