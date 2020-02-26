@@ -69,7 +69,7 @@
 			"StreetlightGroup": "https://fiware.github.io/data-models/specs/StreetLighting/StreetlightGroup/schema.json",
 			"StreetlightModel": "https://fiware.github.io/data-models/specs/StreetLighting/StreetlightModel/schema.json",
 			"ThreePhaseAcMeasurement": "https://fiware.github.io/data-models/specs/Energy/ThreePhaseAcMeasurement/schema.json",
-			"TrafficFlowObserved": "https://smart-data-models.github.io/data-models/specs/Transportation/TrafficFlowObserved/schema.json",
+			"TrafficFlowObserved": "https://fiware.github.io/data-models/specs/Transportation/TrafficFlowObserved/schema.json",
 			"UserActivity": "https://fiware.github.io/data-models/specs/User/Activity/schema.json",
 			"UserContext": "https://fiware.github.io/data-models/specs/User/UserContext/schema.json",
 			"Vehicle": "https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/Vehicle/schema.json",
