@@ -9,7 +9,7 @@
 	},
 	{
 		"description": "JSON Schemas for NGSI v2 models in 'Simplified representation' from https://uri.fiware.org/ns/dataModels , https://github.com/FIWARE/data-models ",
-		"query": "$not(*.value) ? type : false",
+		"query": "$exists(*.value) ? false : type",
 		"cases": {
 			"AeroAllergenObserved": "https://fiware.github.io/data-models/specs/Environment/AeroAllergenObserved/schema.json",
 			"AgriApp": "https://fiware.github.io/data-models/specs/AgriFood/AgriApp/schema.json",
