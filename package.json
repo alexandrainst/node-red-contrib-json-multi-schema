@@ -33,9 +33,9 @@
 		"url": "https://github.com/alexandrainst/node-red-contrib-json-multi-schema.git"
 	},
 	"dependencies": {
-		"ajv": "^6.12.3",
+		"ajv": "^6.12.4",
 		"jsonata": "^1.8.3",
-		"node-fetch": "^2.6.0",
+		"node-fetch": "^2.6.1",
 		"node-red-contrib-mock-cli": "^1.0.9"
 	},
 	"devDependencies": {
