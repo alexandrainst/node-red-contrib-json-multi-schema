@@ -6,7 +6,8 @@
  */
 
 //Ajv: Another JSON Schema Validator
-const Ajv = require('ajv');
+const Ajv = require('ajv').default;
+const addFormats = require('ajv-formats').default;
 const util = require('util');
 
 module.exports = RED => {
@@ -21,11 +22,12 @@ module.exports = RED => {
 
 		const jsonCache = require('./json-cache.js')(node);
 
-		const ajv = Ajv({
+		const ajv = new Ajv({
 			allErrors: true,	//TODO: Make a parameter
 			loadSchema: jsonCache.loadAsync,
 			messages: true,	//TODO: Make a parameter
 		});
+		addFormats(ajv);
 
 		//Cache of validators for different schemas
 		const validators = {};
