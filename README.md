@@ -1,4 +1,5 @@
 # node-red-contrib-json-multi-schema
+
 Generic Node-RED nodes for a JSON data pipeline, suitable for continuous/streaming input, and with dynamic configuration.
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/alexandrainst/node-red-contrib-json-multi-schema/Node%20CI?logo=github)
@@ -24,20 +25,19 @@ Here is an example of full Node-RED flow: [Node-RED_example_of_flow.json](exampl
 
 ![Node-RED flow](examples/Node-RED_example_of_flow.png)
 
- 
 
 ---
 
- 
-
 ## node-red-contrib-json-multi-schema-resolver
+
 * *Context*: Node-RED node, or command line with `node ./index.js json-multi-schema-resolver --mappingsUrl='"https://..."'`
 * *Purpose*: Ability to determine the URL of the JSON Schema (e.g. FIWARE NGSI) or JSONata expression to use for a given JSON payload received.
 * *Configuration*: A Node-RED `mappingsUrl` property to indicate the URL of a file listing which JSON Schema or JSONata expression to use for which data input. (See examples below).
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property.
 * *Output*: The unmodified JSON observation in the `msg.payload` property, and the resolved schema URL in the `msg.schemaUrl` property (if any match was found), and potential resolution errors in the `msg.error` property.
 
-### Example of input data
+### Example of input data (schema-resolver)
+
 This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Transportation/Vehicle/Vehicle/doc/spec/index.html), for which we need to look-up the [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Transportation/Vehicle/VehicleModel/schema.json).
 
 We represent the example as a full Node-RED message, i.e. wrapped into a `{"payload":...}` structure.
@@ -119,6 +119,7 @@ In the example, this JSON file is hosted at [`examples/smart-data-transforms.jso
 ```
 
 ### Example of schema resolution from command line
+
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 See the `jq` examples at the bottom on how to automatise the wrapping.
 
@@ -163,13 +164,10 @@ Output:
 }
 ```
 
- 
-
 ---
 
- 
-
 ## node-red-contrib-json-multi-schema-transformer
+
 * *Context*: Node-RED node, or command line with `node ./index.js multi-schema-transformer`
 * *Purpose*: Ability to transform a JSON observation on the fly from whichever format to another format (e.g. one of the FIWARE NGSI types) using a specified JSONata URL. Schemas are automatically downloaded and cached the first time they are needed.
 * *Input*: A JSON observation in whichever format in the `msg.payload` property, and the corresponding JSONata URL on the `msg.schemaUrl` property (coming from json-multi-schema-resolver).
@@ -180,7 +178,7 @@ Output:
 
 It is typically used with a *json-multi-schema-resolver* node in front.
 
-### Example of input data
+### Example of input data (schema-transformer)
 
 This is an example of proprietary format, which we would like to transform into another format (a standard NGSI one).
 
@@ -231,6 +229,7 @@ In the example, this JSONata file is hosted at [`Cesva-TA120-to-NoiseLevelObserv
 A more advanced example of JSONata transformation can be found in [`NGSI-Normalised-to-keyValues.jsonata.js`](https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/NGSI-Normalised-to-keyValues.jsonata.js).
 
 ### Example of transformation from command line
+
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 
 ```sh
@@ -241,7 +240,7 @@ jq .
 
 Same example, but using a static default value for the schema URL in the corresponding property:
 
-```
+```sh
 echo '{"payload":{"id":"TA120-T246177","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","sonometerClass":"1","location":{"coordinates":[24.985891,60.274286],"type":"Point"},"measurand":["LAeq | 48.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:09.000000Z","LAeq":48.6,"type":"NoiseLevelObserved"}},"error":false}' | \
 node ./index.js json-multi-schema-transformer --defaultSchemaUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"' | \
 jq .
@@ -270,13 +269,10 @@ Output:
 }
 ```
 
- 
-
 ---
 
- 
-
 ## node-red-contrib-json-multi-schema-validator
+
 * *Context*: Node-RED node, or command line with `node ./index.js json-multi-schema-validator`
 * *Purpose*: Ability to validate a JSON observation (e.g. one of the FIWARE NGSI types) on the fly against a specified JSON Schema URL. Schemas are automatically downloaded and cached the first time they are needed.
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property, and the corresponding JSON Schema URL on the `msg.schemaUrl` property (coming from json-multi-schema-resolver).
@@ -286,7 +282,8 @@ Output:
 
 It is typically used with a *json-multi-schema-resolver* node in front.
 
-### Example of input data
+### Example of input data (schema-validator)
+
 This is an example of [standard payload](https://fiware-datamodels.readthedocs.io/en/latest/Environment/NoiseLevelObserved/doc/spec/index.html#noise-level-observed), which we want to validate against its [corresponding JSON Schema](https://smart-data-models.github.io/data-models/specs/Environment/NoiseLevelObserved/schema.json), which address is provided by the Node-RED property `msg.schemaUrl`.
 
 ```json
@@ -310,6 +307,7 @@ This is an example of [standard payload](https://fiware-datamodels.readthedocs.i
 ```
 
 ### Example of JSON Schema validation from command line
+
 The JSON input messages must each be on one single line, and wrapped into a Node-RED structure `{"payload":...}`
 
 ```sh
@@ -341,20 +339,19 @@ Output:
 }
 ```
 
- 
-
 ---
 
- 
-
 ## Wiring/Piping all modules together
+
 The three modules above may be used independently or in combination.
 Here is an example of JSON transformation, followed by a schema resolver, and finally a JSON Schema validation.
 
 ### Wiring in Node-RED
+
 Cf. screenshot at the top of this document.
 
 ### Piping on command line
+
 ```sh
 printf '{"payload":{"id":"TA120-T246177","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","sonometerClass":"1","location":{"coordinates":[24.985891,60.274286],"type":"Point"},"measurand":["LAeq | 48.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:09.000000Z","LAeq":48.6,"type":"NoiseLevelObserved"}}} \n {"payload":{"id":"TA120-T246183","type":"Cesva-TA120","NoiseLevelObserved":{"id":"TA120-T246183-NoiseLevelObserved-2018-09-17T07:01:15.000000Z","sonometerClass":"1","location":{"coordinates":[24.9030921,60.161804],"type":"Point"},"measurand":["LAeq | 37.6 | A-weighted, equivalent, sound level"],"dateObserved":"2018-09-17T07:01:15.000000Z","LAeq":37.6,"type":"NoiseLevelObserved"}}}' | \
 node ./index.js json-multi-schema-resolver --mappingsUrl='"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json"' | \
@@ -369,6 +366,7 @@ _Note_: This is the example used for `npm test`
 The CLI functionnality is provided by [*node-red-contrib-mock-cli*](https://github.com/alexandrainst/node-red-contrib-mock-cli).
 
 ### JSON in Node-RED format
+
 [`jq`](https://stedolan.github.io/jq/) may be used to break down and format a standard payload into a Node-RED payload:
 
 For instance if the input is a list of observations wrapped into a JSON array:
@@ -389,12 +387,7 @@ node ./index.js json-multi-schema-validator | \
 jq -c .
 ```
 
-
- 
-
 ---
-
- 
 
 ## Docker
 
@@ -407,6 +400,7 @@ docker build --tag synchronicityiot/node-red-contrib-json-multi-schema .
 ```
 
 ### Persistant cache
+
 To allow keeping a local copy of the remote JSON configuration files, transformations, and schemas.
 
 ```sh
@@ -432,17 +426,13 @@ docker run -i -v tmp-schemas:/tmp --rm synchronicityiot/node-red-contrib-json-mu
 jq -c .
 ```
 
- 
-
 ---
-
- 
 
 ## Serving schemas
 
 The three nodes are all expecting configuration files and corresponding schemas to be provided by HTTP.
 
-While JSON Schemas are often publicly available (e.g. https://schema.org , https://smart-data-models.github.io/data-models/ ), it might not be the case for the list of JSON Schemas itself, the list of transformations, or the JSONata transformations.
+While JSON Schemas are often publicly available (e.g. <https://schema.org> , <https://smart-data-models.github.io/data-models/> ), it might not be the case for the list of JSON Schemas itself, the list of transformations, or the JSONata transformations.
 
 Any HTTP server can be used to host those documents. This can also be done using Node-RED:
 
@@ -458,11 +448,7 @@ In this example, the schemas are published at `http://localhost:1880/schemas/exa
 
 Read more on the [Node-RED cookbook](https://cookbook.nodered.org/http/serve-json-content).
 
- 
-
 ---
-
- 
 
 ## Caching of schemas
 
