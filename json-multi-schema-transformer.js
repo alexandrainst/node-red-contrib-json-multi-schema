@@ -5,12 +5,12 @@
  * JSONata expressions are cached in memory.
  */
 
-//JSONata: A declarative open-source query and transformation language for JSON data.
+// JSONata: A declarative open-source query and transformation language for JSON data.
 const jsonata = require('jsonata');
 const util = require('util');
 
 module.exports = RED => {
-	"use strict";
+	'use strict';
 
 	function JsonMultiSchemaTransformerNode(config) {
 		RED.nodes.createNode(this, config);
@@ -18,11 +18,11 @@ module.exports = RED => {
 		const defaultSchemaUrl = config.defaultSchemaUrl;
 
 		let lastStatusError = true;
-		node.status({ fill:'grey', shape:'ring', text:'Uninitialized', });
+		node.status({ fill: 'grey', shape: 'ring', text: 'Uninitialized' });
 
 		const jsonCache = require('./json-cache.js')(node);
 
-		//Cache of JSONata expressions
+		// Cache of JSONata expressions
 		const jsonatas = {};
 
 		/**
@@ -33,12 +33,12 @@ module.exports = RED => {
 			let jsonataCache = jsonatas[transformUrl];
 			if (jsonataCache) {
 				if (jsonataCache.expression === null) {
-					//Wait for another task to be done building the same JSONata, so that we can use its cache
+					// Wait for another task to be done building the same JSONata, so that we can use its cache
 					await new Promise((resolve, reject) => jsonataCache.mutexQueue.push(resolve));
 				}
 				jsonataExpression = jsonataCache.expression;
 			} else {
-				//Build JSONata expression for the given transformation URL
+				// Build JSONata expression for the given transformation URL
 				jsonataCache = { expression: null, mutexQueue: [] };
 				jsonatas[transformUrl] = jsonataCache;
 				const transform = await jsonCache.loadAsync(transformUrl, false);
@@ -46,15 +46,15 @@ module.exports = RED => {
 				jsonataExpression = jsonata(transform);
 				jsonataCache.expression = jsonataExpression;
 
-				//Resume tasks waiting for the same JSONata expression
+				// Resume tasks waiting for the same JSONata expression
 				let next;
 				while ((next = jsonataCache.mutexQueue.shift()) != undefined) {
-					next();	//Resolve promise
+					next();	// Resolve promise
 				}
 			}
 
 			if (jsonataExpression) {
-				//Perform transformation
+				// Perform transformation
 				return jsonataExpression.evaluate(payload);
 			}
 
@@ -77,12 +77,12 @@ module.exports = RED => {
 						msg.error += util.format('Failed tranforming using "%s"', msg.schemaUrl);
 					}
 					if (lastStatusError) {
-						node.status({ fill:'green', shape:'dot', text:'OK', });
+						node.status({ fill: 'green', shape: 'dot', text: 'OK' });
 						lastStatusError = false;
 					}
 				} catch (ex) {
 					lastStatusError = true;
-					node.status({ fill:'red', shape:'ring', text:'Error', });
+					node.status({ fill: 'red', shape: 'ring', text: 'Error' });
 					console.error('Schema2 ' + msg.schemaUrl);
 					msg.error += util.format('Error tranforming using "%s": %s', msg.schemaUrl, ex);
 				}
