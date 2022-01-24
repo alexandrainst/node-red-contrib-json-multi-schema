@@ -4,8 +4,8 @@
  * Handles concurrency (when multiple tasks are asking the same document at the same time).
  */
 
-//Location of disk copy of retrieved JSON documents
-const cachePath = process.env.SCHEMAS_CACHE_PATH || '/tmp/';	//TODO: use better location for cache
+// Location of disk copy of retrieved JSON documents
+const cachePath = process.env.SCHEMAS_CACHE_PATH || '/tmp/';	// TODO: use better location for cache
 
 const crypto = require('crypto');
 const fetch = require('node-fetch');
@@ -14,14 +14,14 @@ const util = require('util');
 const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
 
-//Memory copy of retrieved JSON documents
+// Memory copy of retrieved JSON documents
 const ramCaches = {};
 
-//Queue of concurrent tasks waiting for the same JSON documents
+// Queue of concurrent tasks waiting for the same JSON documents
 const mutexQueue = {};
 
 module.exports = node => {
-	"use strict";
+	'use strict';
 	node.debug('Disk cache path: ' + cachePath);
 
 	/**
@@ -50,7 +50,7 @@ module.exports = node => {
 		}
 
 		if (mutexQueue[url]) {
-			//Wait for another task to be done loading the same URL, so that we can use its cache
+			// Wait for another task to be done loading the same URL, so that we can use its cache
 			await new Promise((resolve, reject) => mutexQueue[url].push(resolve));
 
 			result = ramCache(url, parse);
@@ -98,10 +98,10 @@ module.exports = node => {
 			}
 		}
 
-		//Resume tasks waiting for the same URL
+		// Resume tasks waiting for the same URL
 		let next;
 		while ((next = mutexQueue[url].shift()) != undefined) {
-			next();	//Resolve promise
+			next();	// Resolve promise
 		}
 		delete mutexQueue[url];
 

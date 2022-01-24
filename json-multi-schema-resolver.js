@@ -8,7 +8,7 @@ const jsonata = require('jsonata');
 const util = require('util');
 
 module.exports = RED => {
-	"use strict";
+	'use strict';
 
 	function JsonMultiSchemaResolverNode(config) {
 		RED.nodes.createNode(this, config);
@@ -16,7 +16,7 @@ module.exports = RED => {
 		const mappingsUrl = config.mappingsUrl;
 
 		let lastStatusError = true;
-		node.status({ fill:'grey', shape:'ring', text:'Uninitialized', });
+		node.status({ fill: 'grey', shape: 'ring', text: 'Uninitialized' });
 
 		const jsonCache = require('./json-cache.js')(node);
 
@@ -26,14 +26,14 @@ module.exports = RED => {
 		async function resolveAsync(payload) {
 			const mappings = await jsonCache.loadAsync(mappingsUrl);
 			let schemaUrl = '';
-			for (let mapping of mappings) {
+			for (const mapping of mappings) {
 				if (mapping.query && mapping.cases) {
 					const expression = jsonata(mapping.query);
 					let match = expression.evaluate(payload);
 					if (match) {
 						if (match === true) {
-							//Special case for boolean
-							match = "true";
+							// Special case for boolean
+							match = 'true';
 						}
 						const result = mapping.cases[match];
 						if (result) {
@@ -55,12 +55,12 @@ module.exports = RED => {
 					msg.error = msg.error ? msg.error : false;
 				}
 				if (lastStatusError) {
-					node.status({ fill:'green', shape:'dot', text:'OK', });
+					node.status({ fill: 'green', shape: 'dot', text: 'OK' });
 					lastStatusError = false;
 				}
 			} catch (ex) {
 				lastStatusError = true;
-				node.status({ fill:'red', shape:'ring', text:'Error', });
+				node.status({ fill: 'red', shape: 'ring', text: 'Error' });
 				msg.error = msg.error ? msg.error + ' ; ' : '';
 				msg.error += util.format('Error resolving schema using "%s": %s', mappingsUrl, ex);
 			}
