@@ -1,6 +1,6 @@
 {
 	"name": "node-red-contrib-json-multi-schema",
-	"version": "1.4.1",
+	"version": "1.4.2",
 	"description": "Generic JSON data pipeline tools, with dynamic transformation (using JSONata rules), resolving JSON Schema (using JSONata rules), and then validation (using JSON Schema). For Node-RED and for command-line.",
 	"main": "index.js",
 	"readmeFilename": "readme.md",
@@ -17,7 +17,11 @@
 		"node-red",
 		"nodered"
 	],
+	"engines": {
+		"node": ">=10"
+	},
 	"node-red": {
+		"version": ">=0.20.0",
 		"nodes": {
 			"json-multi-schema-resolver": "json-multi-schema-resolver.js",
 			"json-multi-schema-transformer": "json-multi-schema-transformer.js",
@@ -38,7 +42,7 @@
 		"ajv-formats": "^2.1.1",
 		"jsonata": "^1.8.5",
 		"node-fetch": "^2.6.7",
-		"node-red-contrib-mock-cli": "^1.1.0"
+		"node-red-contrib-mock-cli": "^1.1.1"
 	},
 	"devDependencies": {
 		"eslint": "^7.32.0",

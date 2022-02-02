@@ -1,4 +1,3 @@
-/* jshint esversion:8, node:true, strict:true */
 /**
  * Node-RED node that validates a JSON payload against a specified JSON Schema URL.
  * JSON Schemas are automatically downloaded and cached on disk the first time they are needed.

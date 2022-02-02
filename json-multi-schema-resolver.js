@@ -1,4 +1,3 @@
-/* jshint esversion:8, node:true, strict:true */
 /**
  * Node-RED node that can determine the URL of the JSON Schema to use for a given JSON payload received,
  * using a list of possible JSON Schemas (mappings), which is automatically downloaded and cached the first time it is needed.

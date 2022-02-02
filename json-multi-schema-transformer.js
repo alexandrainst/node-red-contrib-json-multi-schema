@@ -1,4 +1,3 @@
-/* jshint esversion:8, node:true, strict:true */
 /**
  * Node-RED node transforming a JSON observation from whichever format to another format using a specified JSONata URL.
  * Schemas are automatically downloaded and cached on disk the first time they are needed.

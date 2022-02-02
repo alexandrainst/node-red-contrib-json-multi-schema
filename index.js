@@ -1,4 +1,3 @@
-/* jshint esversion:8, node:true, strict:true */
 'use strict';
 /**
  * Command-line interface for the json-multi-schema Node-RED nodes.

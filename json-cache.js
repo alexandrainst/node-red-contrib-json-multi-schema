@@ -1,4 +1,3 @@
-/* jshint esversion:8, node:true, strict:true */
 /**
  * Module to asynchronously download JSON (and text such as JSONata) documents, then cache them in memory and on disk.
  * Handles concurrency (when multiple tasks are asking the same document at the same time).
