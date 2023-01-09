@@ -2,6 +2,7 @@
 	"default": true,
 	"blanks-around-fences": false,
 	"blanks-around-lists": false,
+  "emphasis-style": false,
 	"first-line-heading": false,
 	"line-length": false,
 	"no-hard-tabs": false,
