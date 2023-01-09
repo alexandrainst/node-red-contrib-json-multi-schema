@@ -108,6 +108,6 @@ module.exports = node => {
 	}
 
 	return {
-		loadAsync: loadAsync,
+		loadAsync,
 	};
 };
