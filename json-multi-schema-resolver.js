@@ -28,7 +28,7 @@ module.exports = RED => {
 			for (const mapping of mappings) {
 				if (mapping.query && mapping.cases) {
 					const expression = jsonata(mapping.query);
-					let match = expression.evaluate(payload);
+					let match = await expression.evaluate(payload);
 					if (match) {
 						if (match === true) {
 							// Special case for boolean
