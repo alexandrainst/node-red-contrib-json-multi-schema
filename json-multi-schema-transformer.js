@@ -54,7 +54,7 @@ module.exports = RED => {
 
 			if (jsonataExpression) {
 				// Perform transformation
-				return jsonataExpression.evaluate(payload);
+				return await jsonataExpression.evaluate(payload);
 			}
 
 			return false;
