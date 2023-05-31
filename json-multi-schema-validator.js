@@ -5,7 +5,6 @@
  */
 
 // Ajv: Another JSON Schema Validator
-const Ajv = require('ajv').default;
 const addFormats = require('ajv-formats').default;
 const util = require('util');
 
@@ -21,11 +20,48 @@ module.exports = RED => {
 
 		const jsonCache = require('./json-cache.js')(node);
 
-		const ajv = new Ajv({
+		let ajv;
+		const opts = {
 			allErrors: true,	// TODO: Make a parameter
 			loadSchema: jsonCache.loadAsync,
 			messages: true,	// TODO: Make a parameter
-		});
+		};
+
+		// http://json-schema.org/specification.html
+		// https://ajv.js.org/json-schema.html#json-schema-versions
+		switch (config.schemaVersion) {
+			case 'draft-2020-12': {
+				const Ajv2020 = require('ajv/dist/2020');
+				ajv = new Ajv2020(opts);
+				break;
+			}
+			case 'draft-2019-09': {
+				const Ajv2019 = require('ajv/dist/2019');
+				ajv = new Ajv2019(opts);
+				const draft7MetaSchema = require('ajv/dist/refs/json-schema-draft-07.json');
+				ajv.addMetaSchema(draft7MetaSchema);
+				break;
+			}
+			case 'draft-06': {
+				const Ajv = require('ajv');
+				const draft6MetaSchema = require('ajv/dist/refs/json-schema-draft-06.json');
+				ajv = new Ajv(opts);
+				ajv.addMetaSchema(draft6MetaSchema);
+				break;
+			}
+			case 'draft-04': {
+				const Ajv = require('ajv-draft-04');
+				ajv = new Ajv(opts);
+				break;
+			}
+			case 'draft-07':
+			default: {
+				const Ajv = require('ajv');
+				ajv = new Ajv(opts);
+				break;
+			}
+		}
+
 		addFormats(ajv);
 
 		// Cache of validators for different schemas

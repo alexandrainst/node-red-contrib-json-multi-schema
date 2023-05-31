@@ -275,6 +275,7 @@ Output:
 
 * *Context*: Node-RED node, or command line with `node ./index.js json-multi-schema-validator`
 * *Purpose*: Ability to validate a JSON observation (e.g. one of the FIWARE NGSI types) on the fly against a specified JSON Schema URL. Schemas are automatically downloaded and cached the first time they are needed.
+* *Configuration*: A `schemaVersion` property indicating which [version of JSON Schema version](http://json-schema.org/specification.html). See the [Ajv documentation](https://ajv.js.org/json-schema.html#json-schema-versions) for technical details.
 * *Input*: A JSON observation (e.g. one of the FIWARE NGSI types) in the `msg.payload` property, and the corresponding JSON Schema URL on the `msg.schemaUrl` property (coming from json-multi-schema-resolver).
   * If no `msg.schemaUrl` is provided, no validation is performed.
 * *Output*: The unmodified JSON observation in the `msg.payload` property, the used schema in the `msg.validUrl` (if any validation was performed), and potential validation errors in the `msg.error` property.
@@ -312,7 +313,7 @@ The JSON input messages must each be on one single line, and wrapped into a Node
 
 ```sh
 echo '{"payload":{"id":"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z","type":"NoiseLevelObserved","LAeq":48.6,"dateObservedFrom":"2018-09-17T07:01:09.000000Z","dateObservedTo":"2018-09-17T07:01:09.000000Z","location":{"coordinates":[24.985891,60.274286],"type":"Point"}},"error":false,"transformUrl":"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js","schemaUrl":"https://smart-data-models.github.io/data-models/specs/Environment/NoiseLevelObserved/schema.json"}' | \
-node ./index.js json-multi-schema-validator | \
+node ./index.js json-multi-schema-validator --schemaVersion='\"draft-2019-09\"' | \
 jq .
 ```
 

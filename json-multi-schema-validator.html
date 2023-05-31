@@ -5,6 +5,7 @@
 		color: '#00B4FF',
 		defaults: {
 			name: { value: '' },
+			schemaVersion: { value: 'draft-07' },
 		},
 		inputs: 1,
 		outputs: 1,
@@ -20,6 +21,16 @@
 		<label for="node-input-name"><i class="icon-tag"></i> Name</label>
 		<input type="text" id="node-input-name" placeholder="Name" />
 	</div>
+	<div class="form-row">
+		<label for="node-input-schemaVersion"><i class="fa fa-flag"></i> JSON Schema version</label>
+		<select id="node-input-schemaVersion">
+			<option value="draft-07">draft-07 (default)</option>
+			<option value="draft-2019-09">draft-2019-09 (newer but slower) + draft-07</option>
+			<option value="draft-2020-12">draft-2020-12 (newest, not backwards compatible)</option>
+			<option value="draft-06">draft-06 (obsolete) + draft-07</option>
+			<option value="draft-04">draft-04 (obsolete, deprecated)</option>
+		</select>
+	</div>
 </script>
 
 <script type="text/x-red" data-help-name="json-multi-schema-validator">
@@ -29,4 +40,10 @@
 		<li>The content of <code>msg.payload</code> is unchanged. If no <code>msg.schemaUrl</code> is provided, no validation is performed.</li>
 		<li>Errors are returned on <code>msg.error</code></li>
 	</ul>
+	<h3>Options</h3>
+	<dl>
+		<dt>schemaVersion</dt>
+		<dd>Version of <a href="http://json-schema.org/specification.html">JSON Schema</a> to use</dd>
+		<dd>See the <a href="https://ajv.js.org/json-schema.html#json-schema-versions">documentation from the underlying library</a></dd>
+	</dl>
 </script>
