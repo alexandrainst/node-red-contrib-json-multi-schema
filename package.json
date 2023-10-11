@@ -3,7 +3,6 @@
 	"version": "1.6.1",
 	"description": "Generic JSON data pipeline tools, with dynamic transformation (using JSONata rules), resolving JSON Schema (using JSONata rules), and then validation (using JSON Schema). For Node-RED and for command-line.",
 	"main": "index.js",
-	"readmeFilename": "readme.md",
 	"keywords": [
 		"FIWARE",
 		"AtomicService",
