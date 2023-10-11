@@ -57,7 +57,7 @@
         "fieldType": "msg",
         "format": "json",
         "syntax": "plain",
-        "template": "[\n\t{\n\t\t\"description\": \"Transformation from NGSI v2 models from 'Normalized response representation' (JSON-LD version partially supported) to 'Simplified representation'\",\n\t\t\"query\": \"type and *.value\",\n\t\t\"cases\": {\n\t\t\t\"true\": \"http://localhost:1880/schemas/NGSI-Normalised-to-keyValues.jsonata.js\"\n\t\t}\n\t},\n\t{\n\t\t\"description\": \"Transformation from Cesva-TA120 to NGSI v2 NoiseLevelObserved in Simplified representation\",\n\t\t\"query\": \"type='Cesva-TA120' and NoiseLevelObserved\",\n\t\t\"cases\": {\n\t\t\t\"true\": \"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js\"\n\t\t}\n\t}\n]\n",
+        "template": "[\n\t{\n\t\t\"description\": \"Transformation from NGSI v2 models from 'Normalized response representation' (JSON-LD version partially supported) to 'Simplified representation'\",\n\t\t\"query\": \"type and *.value\",\n\t\t\"cases\": {\n\t\t\t\"true\": \"http://localhost:1880/schemas/NGSI-Normalised-to-keyValues.jsonata.js\"\n\t\t}\n\t},\n\t{\n\t\t\"description\": \"Transformation from Cesva-TA120 to NGSI v2 NoiseLevelObserved in Simplified representation\",\n\t\t\"query\": \"type='Cesva-TA120' and NoiseLevelObserved\",\n\t\t\"cases\": {\n\t\t\t\"true\": \"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/main/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js\"\n\t\t}\n\t}\n]\n",
         "output": "str",
         "x": 620,
         "y": 1220,

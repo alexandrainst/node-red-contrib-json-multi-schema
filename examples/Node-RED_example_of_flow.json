@@ -17,7 +17,7 @@
         "type": "json-multi-schema-resolver",
         "z": "51af8c53.929c6c",
         "name": "",
-        "mappingsUrl": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-models.json",
+        "mappingsUrl": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/main/examples/smart-data-models.json",
         "x": 640,
         "y": 920,
         "wires": [
@@ -161,7 +161,7 @@
         "type": "json-multi-schema-resolver",
         "z": "51af8c53.929c6c",
         "name": "",
-        "mappingsUrl": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/smart-data-transforms.json",
+        "mappingsUrl": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/main/examples/smart-data-transforms.json",
         "x": 640,
         "y": 760,
         "wires": [
@@ -205,7 +205,7 @@
         "type": "function",
         "z": "51af8c53.929c6c",
         "name": "Standard message with known schema",
-        "func": "msg.payload = {\n    \"id\": \"TA120-T246177\",\n    \"type\": \"Cesva-TA120\",\n    \"NoiseLevelObserved\": {\n        \"id\": \"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z\",\n        \"sonometerClass\": \"1\",\n        \"location\": {\n            \"coordinates\": [\n                24.985891,\n                60.274286\n            ],\n            \"type\": \"Point\"\n        },\n        \"measurand\": [\n            \"LAeq | 48.6 | A-weighted, equivalent, sound level\"\n        ],\n        \"dateObserved\": \"2018-09-17T07:01:09.000000Z\",\n        \"LAeq\": 48.6,\n        \"type\": \"NoiseLevelObserved\"\n    }\n};\nmsg.schemaUrl = \"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js\";\nreturn msg;\n",
+        "func": "msg.payload = {\n    \"id\": \"TA120-T246177\",\n    \"type\": \"Cesva-TA120\",\n    \"NoiseLevelObserved\": {\n        \"id\": \"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z\",\n        \"sonometerClass\": \"1\",\n        \"location\": {\n            \"coordinates\": [\n                24.985891,\n                60.274286\n            ],\n            \"type\": \"Point\"\n        },\n        \"measurand\": [\n            \"LAeq | 48.6 | A-weighted, equivalent, sound level\"\n        ],\n        \"dateObserved\": \"2018-09-17T07:01:09.000000Z\",\n        \"LAeq\": 48.6,\n        \"type\": \"NoiseLevelObserved\"\n    }\n};\nmsg.schemaUrl = \"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/main/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js\";\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "x": 320,

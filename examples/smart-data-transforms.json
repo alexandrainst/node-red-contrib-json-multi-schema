@@ -3,14 +3,14 @@
 		"description": "Transformation from NGSI v2 models from 'Normalized response representation' (JSON-LD version partially supported) to 'Simplified representation'",
 		"query": "type and *.value",
 		"cases": {
-			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/NGSI-Normalised-to-keyValues.jsonata.js"
+			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/main/examples/NGSI-Normalised-to-keyValues.jsonata.js"
 		}
 	},
 	{
 		"description": "Transformation from Cesva-TA120 to NGSI v2 NoiseLevelObserved in Simplified representation",
 		"query": "type='Cesva-TA120' and NoiseLevelObserved",
 		"cases": {
-			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/master/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"
+			"true": "https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/main/examples/Cesva-TA120-to-NoiseLevelObserved.jsonata.js"
 		}
 	}
 ]
