@@ -42,22 +42,25 @@
 		"ajv-formats": "^2.1.1",
 		"jsonata": "^2.0.3",
 		"node-fetch": "^2.6.11",
-		"node-red-contrib-mock-cli": "^1.4.1"
+		"node-red-contrib-mock-cli": "^1.4.3"
 	},
 	"devDependencies": {
-		"eslint": "^8.53.0",
-		"eslint-config-standard": "^17.1.0",
-		"eslint-plugin-html": "^8.0.0",
-		"eslint-plugin-import": "^2.29.0",
-		"eslint-plugin-n": "^16.2.0",
-		"eslint-plugin-promise": "^6.1.1"
+		"eslint": "^9.8.0",
+		"@eslint/js": "^9.8.0",
+		"eslint-plugin-html": "^8.1.1",
+		"globals": "^15.9.0",
+		"markdownlint-cli": "^0.41.0",
+		"neostandard": "^0.11.2",
+		"node-red-contrib-mock-cli": "^1.4.3"
 	},
 	"scripts": {
+		"eslint": "eslint .",
+		"eslint_fix": "eslint --fix .",
+		"markdownlint": "markdownlint '**/*.md'",
+		"markdownlint_fix": "markdownlint --fix '**/*.md'",
+		"fix": "npm run eslint_fix && npm run markdownlint_fix",
+		"pretest": "npm run eslint && npm run markdownlint",
 		"start": "node ./index.js",
-		"eslint": "eslint --ext .js,.html .",
-		"eslint_fix": "eslint --fix --ext .js,.html .",
-		"fix": "npm run eslint_fix",
-		"pretest": "npm run-script eslint",
 		"clean": "rm /tmp/schema.*.tmp.js",
 		"draft-07": "printf '{\"payload\":{\"id\":\"TA120-T246177\",\"type\":\"Cesva-TA120\",\"NoiseLevelObserved\":{\"id\":\"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z\",\"sonometerClass\":\"1\",\"location\":{\"coordinates\":[24.985891,60.274286],\"type\":\"Point\"},\"measurand\":[\"LAeq | 48.6 | A-weighted, equivalent, sound level\"],\"dateObserved\":\"2018-09-17T07:01:09.000000Z\",\"LAeq\":48.6,\"type\":\"NoiseLevelObserved\"}}} \\n {\"payload\":{\"id\":\"TA120-T246183\",\"type\":\"Cesva-TA120\",\"NoiseLevelObserved\":{\"id\":\"TA120-T246183-NoiseLevelObserved-2018-09-17T07:01:15.000000Z\",\"sonometerClass\":\"1\",\"location\":{\"coordinates\":[24.9030921,60.161804],\"type\":\"Point\"},\"measurand\":[\"LAeq | 37.6 | A-weighted, equivalent, sound level\"],\"dateObserved\":\"2018-09-17T07:01:15.000000Z\",\"LAeq\":37.6,\"type\":\"NoiseLevelObserved\"}}}' | node ./index.js json-multi-schema-resolver --mappingsUrl='\"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/main/examples/smart-data-transforms.json\"' | node ./index.js json-multi-schema-transformer | node ./index.js json-multi-schema-resolver --mappingsUrl='\"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/main/examples/smart-data-models.json\"' | node ./index.js json-multi-schema-validator",
 		"draft-2019-09": "printf '{\"payload\":{\"id\":\"TA120-T246177\",\"type\":\"Cesva-TA120\",\"NoiseLevelObserved\":{\"id\":\"TA120-T246177-NoiseLevelObserved-2018-09-17T07:01:09.000000Z\",\"sonometerClass\":\"1\",\"location\":{\"coordinates\":[24.985891,60.274286],\"type\":\"Point\"},\"measurand\":[\"LAeq | 48.6 | A-weighted, equivalent, sound level\"],\"dateObserved\":\"2018-09-17T07:01:09.000000Z\",\"LAeq\":48.6,\"type\":\"NoiseLevelObserved\"}}} \\n {\"payload\":{\"id\":\"TA120-T246183\",\"type\":\"Cesva-TA120\",\"NoiseLevelObserved\":{\"id\":\"TA120-T246183-NoiseLevelObserved-2018-09-17T07:01:15.000000Z\",\"sonometerClass\":\"1\",\"location\":{\"coordinates\":[24.9030921,60.161804],\"type\":\"Point\"},\"measurand\":[\"LAeq | 37.6 | A-weighted, equivalent, sound level\"],\"dateObserved\":\"2018-09-17T07:01:15.000000Z\",\"LAeq\":37.6,\"type\":\"NoiseLevelObserved\"}}}' | node ./index.js json-multi-schema-resolver --mappingsUrl='\"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/main/examples/smart-data-transforms.json\"' | node ./index.js json-multi-schema-transformer | node ./index.js json-multi-schema-resolver --mappingsUrl='\"https://raw.githubusercontent.com/alexandrainst/node-red-contrib-json-multi-schema/main/examples/smart-data-models.json\"' | node ./index.js json-multi-schema-validator --schemaVersion='\"draft-2019-09\"'",
