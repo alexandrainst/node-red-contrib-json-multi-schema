@@ -17,10 +17,10 @@
 		"nodered"
 	],
 	"engines": {
-		"node": ">=12.20.0"
+		"node": ">=18"
 	},
 	"node-red": {
-		"version": ">=2",
+		"version": ">=4",
 		"nodes": {
 			"json-multi-schema-resolver": "json-multi-schema-resolver.js",
 			"json-multi-schema-transformer": "json-multi-schema-transformer.js",
