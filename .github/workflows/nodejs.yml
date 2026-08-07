@@ -12,13 +12,12 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  test-lts:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18.x, 24.x]
+        node-version: [24.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -31,3 +30,22 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+
+  test-compatibility:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v7
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v7
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm run test-only
