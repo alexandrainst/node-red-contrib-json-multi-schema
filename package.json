@@ -17,7 +17,7 @@
 		"nodered"
 	],
 	"engines": {
-		"node": ">=14"
+		"node": ">=16"
 	},
 	"node-red": {
 		"version": ">=3",
